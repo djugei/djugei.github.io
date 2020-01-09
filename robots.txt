@@ -1,0 +1,2 @@
+User-agent: *
+Sitemap: https://djugei.github.io/sitemap.xml

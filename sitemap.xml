@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    
+        <url>
+            <loc>https://djugei.github.io/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>https://djugei.github.io/categories/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>https://djugei.github.io/categories/blog/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>https://djugei.github.io/categories/dumbnet/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>https://djugei.github.io/categories/treelike/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>https://djugei.github.io/dumbnet-0-1-0/</loc>
+            
+                <lastmod>2019-12-26</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://djugei.github.io/introduction/</loc>
+            
+                <lastmod>2020-01-07</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://djugei.github.io/page/1/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>https://djugei.github.io/tags/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>https://djugei.github.io/tags/rust/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>https://djugei.github.io/tags/web/</loc>
+            
+        </url>
+    
+        <url>
+            <loc>https://djugei.github.io/treelike-0-2-0/</loc>
+            
+                <lastmod>2019-07-20</lastmod>
+            
+        </url>
+    
+</urlset>

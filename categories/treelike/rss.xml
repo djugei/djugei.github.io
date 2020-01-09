@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Devblog of Djugei</title>
+        <link>https://djugei.github.io</link>
+        <description>Some fun ideas and insights, mainly around rust</description>
+        <generator>Zola</generator>
+        <language>en</language>
+        <atom:link href="https://djugei.github.io/categories/treelike/rss.xml" rel="self" type="application/rss+xml"/>
+        <lastBuildDate>Sat, 20 Jul 2019 00:00:00 +0000</lastBuildDate>
+        
+            <item>
+                <title>Treelike version 0.2.0 released</title>
+                <pubDate>Sat, 20 Jul 2019 00:00:00 +0000</pubDate>
+                <link>https://djugei.github.io/treelike-0-2-0/</link>
+                <guid>https://djugei.github.io/treelike-0-2-0/</guid>
+                <description>&lt;p&gt;Treelike is an abstraction over Trees, kinda like Iterator for lists. Is also no_std by default.&lt;&#x2F;p&gt;
+</description>
+            </item>
+        
+    </channel>
+</rss>
