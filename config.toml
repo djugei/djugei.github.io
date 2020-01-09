@@ -1,0 +1,34 @@
+# The URL the site will be built for
+base_url = "https://djugei.github.io"
+
+title = "Devblog of Djugei"
+description = "Some fun ideas and insights, mainly around rust"
+
+default_language = "en"
+
+generate_rss = true
+
+# Whether to automatically compile all Sass files in the sass directory
+compile_sass = true
+
+# Whether to do syntax highlighting
+# Theme can be customised by setting the `highlight_theme` variable to a theme supported by Zola
+highlight_code = true
+highlight_theme = "solarized-dark"
+
+# Whether to build a search index to be used later on by a JavaScript library
+build_search_index = false
+
+theme = "after-dark"
+
+taxonomies = [
+	{name = "categories", rss = true},
+	{name = "tags", rss = true},
+]
+
+[extra]
+after_dark_menu = [
+	{url = "$BASE_URL", name = "Home"},
+	{url = "$BASE_URL/categories", name = "Categories"},
+	{url = "$BASE_URL/tags", name = "Tags"},
+]
