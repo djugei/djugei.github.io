@@ -50,7 +50,7 @@ As such its strictly less powerful than allocating Rust, i.e. there exist proble
 impossible to express in alloc-free Rust.
 
 Because many tasks actually do not require a Turing machine to solve,
-actually solving them on a l less powerful machine is a fun challenge and I think that is why I like it.
+actually solving them on a less powerful machine is a fun challenge and I think that is why I like it.
 
 
 ## (mostly) a single stack automaton?
