@@ -72,4 +72,4 @@ I might also have overlooked some other loophole, just send a [pull request](htt
  with your nit picks.
 There might also be something wrong with my understanding of the computer science, feel free to correct.
 
-Add your comments on [reddit]()!
+Add your comments on [reddit](https://www.reddit.com/r/rust/comments/emq98r/)!
