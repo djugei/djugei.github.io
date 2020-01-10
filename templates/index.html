@@ -24,7 +24,6 @@
     </head>
 
     <body class="hack dark main container">
-        {% block content %}
             {% block header %}
                 {% if config.extra.after_dark_menu %}
                     <header>
@@ -39,8 +38,12 @@
                         </nav>
                     </header>
                 {% endif %}
+	      {% if config.generate_rss %}
+		<a href="{{ get_url(path="rss.xml") | safe }}">(rss)</a>
+	      {% endif %}
             {% endblock header %}
 
+        {% block content %}
             <main>
                 {% if config.extra.after_dark_title %}
                     <header>
