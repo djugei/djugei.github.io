@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title>Devblog of Djugei</title>
+
+      
+        <link rel="alternate" type="application/rss+xml" title="RSS" href="https://djugei.github.io/rss.xml">
+      
+
+      
+          <link rel="stylesheet" href="https://djugei.github.io/site.css">
+      
+
+      
+      
+    </head>
+
+    <body class="hack dark main container">
+            
+                
+                    <header>
+                        <nav itemscope itemtype="http://schema.org/SiteNavigationElement">
+                        
+                            <a itemprop="url"
+                               class=""
+                               href="https:&#x2F;&#x2F;djugei.github.io">
+                                <span itemprop="name">Home
+                                </span></a>
+                        
+                            <a itemprop="url"
+                               class=""
+                               href="https:&#x2F;&#x2F;djugei.github.io&#x2F;categories">
+                                <span itemprop="name">Categories
+                                </span></a>
+                        
+                            <a itemprop="url"
+                               class=""
+                               href="https:&#x2F;&#x2F;djugei.github.io&#x2F;tags">
+                                <span itemprop="name">Tags
+                                </span></a>
+                        
+                        </nav>
+                    </header>
+                
+	      
+		<a href="https://djugei.github.io/rss.xml">(rss)</a>
+	      
+            
+
+        
+
+<article itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+        <h1 itemprop="headline">Why I like programming for #![no_std] in Rust (even without embedded)</h1>
+        <span class="muted">
+    <svg style="margin-bottom:-3px" class="i-clock" viewBox="0 0 32 32"
+         width="16" height="16" fill="none" stroke="currentcolor"
+         stroke-linecap="round" stroke-linejoin="round" stroke-width="6.25%">
+        <circle cx="16" cy="16" r="14"/>
+        <path d="M16 8 L16 16 20 20"/>
+    </svg>
+    <span>4 minute read</span>
+    <svg style="margin-bottom: -3px" class="i-edit" viewBox="0 0 32 32"
+         width="16" height="16" fill="none" stroke="currentcolor"
+         stroke-linecap="round" stroke-linejoin="round" stroke-width="6.25%">
+        <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z"/>
+    </svg>
+
+    Published: 2020-01-10
+</span>
+    </header>
+    <div itemprop="articleBody">
+      <p>I noticed that I quite enjoy writing libraries that support no_std environments,
+even though I myself don't even work on embedded.</p>
+<p id="zola-continue-reading"><a name="continue-reading"></a></p>
+<p>Its just very fun to try and get as many features done without ever allocating, purely from a challenge point of view.</p>
+<p>There is also some benefits one can hope for, the two big ones being usability in more cases, like embedded,
+and better performance due to less memory management overhead, possibly less indirection and therefore more
+compiler insight</p>
+<p>After a bit of thinking I realized that there is one more, and much more fundamental issue:
+If im not mistaken Rust without allocations is not <a href="https://djugei.github.io/no-std-motivation/">Turing complete</a> (for the most part).</p>
+<h2 id="what-is-turing-complete">What is Turing complete</h2>
+<p>Basically a Turing machine can solve any problem that we know how to solve at all.
+A language that is Turing complete is to some degree equivalent to a Turing machine,
+i.e. can be transformed into one without gaining or loosing functionality.
+Most programming languages, including Rust, are Turing complete.</p>
+<p>Computer science can also reason about &quot;über Turing machines&quot; that can solve problems even Turing machines can't solve,
+but we have no idea how to build one of those even in theory.</p>
+<p>While being most powerful, Turing complete languages also have some drawbacks.
+They are harder to reason about than their lesser peers.
+For examples its impossible to tell if a given program is going to run into an endless loop/recursion.</p>
+<h2 id="dual-stack-automata-and-rust">Dual stack automata and Rust</h2>
+<p>Dual stack automata are constructs that are exactly as powerful as Turing machines.
+They are finite automata that also have access to two separate stacks.
+As soon as you have two stacks you can build any kind of data structure, including any number of stacks.</p>
+<p>You can consider normal Rust to be one of those. You have the code as the automaton,
+the call stack as one stack and stuff on the heap as the second stack.</p>
+<p>Now no_std, or more specifically Rust without allocations lacks the second stack.
+Its therefore (mostly) a (single) stack automaton.
+As such its strictly less powerful than allocating Rust, i.e. there exist problems that can be solved in allocating Rust, but are
+impossible to express in alloc-free Rust.</p>
+<p>Because many tasks actually do not require a Turing machine to solve,
+actually solving them on a l less powerful machine is a fun challenge and I think that is why I like it.</p>
+<h2 id="mostly-a-single-stack-automaton">(mostly) a single stack automaton?</h2>
+<p>How can something be mostly a single stack automaton?
+Well for one no programming language is actually like <em>really</em> <em>really</em> Turing complete.
+A dual stack (and even a single stack!) automaton requires two (one) unbounded stacks.</p>
+<p>Unbounded as in as large as the problem needs it to be. Real computers have limited hard disk space though, so they fail that
+requirement for big problems. And in practice fail it even for much smaller problems cause no one wants to use Disk as Memory.</p>
+<p>In the same way you could have a second, bounded, stack be an element in your single stack and therefore have &quot;two&quot; stacks.
+But at this point you are basically building an allocator anyway :).</p>
+<p>Also no_std and alloc free Rust still allow for infinite loops and recursions. That's true but basically never a good idea.
+Since you only have one stack, that at any point has a known number of elements it basically never makes sense to iterate over
+anything without bounds.</p>
+<p>I might also have overlooked some other loophole, just send a <a href="https://github.com/djugei/djugei.github.io/tree/raw">pull request</a>
+with your nit picks.
+There might also be something wrong with my understanding of the computer science, feel free to correct.</p>
+<p>Add your comments on <a href="https://djugei.github.io/no-std-motivation/">reddit</a>!</p>
+
+    </div>
+
+    
+        <footer>
+            <hr>
+            <p>
+                
+                
+                    
+                    in <a href="https://djugei.github.io/categories/misc/">misc</a>
+                    <a href="https://djugei.github.io/categories/misc/rss.xml">(rss)</a>
+                
+                
+                    and tagged
+                    
+                        <a href="https://djugei.github.io/tags/rust/">rust</a>
+                        <a href="https://djugei.github.io/tags/rust/rss.xml">(rss)</a>
+                        
+                            
+                                
+                                    and
+                                
+                            
+                        
+                    
+                        <a href="https://djugei.github.io/tags/no-std/">no_std</a>
+                        <a href="https://djugei.github.io/tags/no-std/rss.xml">(rss)</a>
+                        
+                            
+                        
+                    
+                
+            </p>
+        </footer>
+    
+</article>
+
+
+    </body>
+
+</html>
