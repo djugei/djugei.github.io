@@ -19,7 +19,7 @@ compiler insight
 
 
 After a bit of thinking I realized that there is one more, and much more fundamental issue:
-If im not mistaken Rust without allocations is not [Turing complete]() (for the most part).
+If im not mistaken Rust without allocations is not [Turing complete](https://en.wikipedia.org/wiki/Chomsky_hierarchy) (for the most part).
 
 
 ## What is Turing complete
