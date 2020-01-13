@@ -100,4 +100,4 @@ builds without errors. If anyone knows how to fix that don't hesitate to contact
 
 [crate](https://crates.io/crates/optimath/) [docs](https://docs.rs/optimath/) [repository](https://github.com/djugei/optimath)
 
-You can also join the discussion on [reddit]()!
+You can also join the discussion on [reddit](https://www.reddit.com/r/rust/comments/eo4ury/)!
