@@ -27,6 +27,11 @@
         </url>
     
         <url>
+            <loc>https://djugei.github.io/categories/optimath/</loc>
+            
+        </url>
+    
+        <url>
             <loc>https://djugei.github.io/categories/treelike/</loc>
             
         </url>
@@ -49,6 +54,13 @@
             <loc>https://djugei.github.io/no-std-motivation/</loc>
             
                 <lastmod>2020-01-10</lastmod>
+            
+        </url>
+    
+        <url>
+            <loc>https://djugei.github.io/optimath-0-3-0/</loc>
+            
+                <lastmod>2020-01-13</lastmod>
             
         </url>
     

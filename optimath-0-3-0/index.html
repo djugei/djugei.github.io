@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title>Devblog of Djugei</title>
+
+      
+        <link rel="alternate" type="application/rss+xml" title="RSS" href="https://djugei.github.io/rss.xml">
+      
+
+      
+          <link rel="stylesheet" href="https://djugei.github.io/site.css">
+      
+
+      
+      
+    </head>
+
+    <body class="hack dark main container">
+            
+                
+                    <header>
+                        <nav itemscope itemtype="http://schema.org/SiteNavigationElement">
+                        
+                            <a itemprop="url"
+                               class=""
+                               href="https:&#x2F;&#x2F;djugei.github.io">
+                                <span itemprop="name">Home
+                                </span></a>
+                        
+                            <a itemprop="url"
+                               class=""
+                               href="https:&#x2F;&#x2F;djugei.github.io&#x2F;categories">
+                                <span itemprop="name">Categories
+                                </span></a>
+                        
+                            <a itemprop="url"
+                               class=""
+                               href="https:&#x2F;&#x2F;djugei.github.io&#x2F;tags">
+                                <span itemprop="name">Tags
+                                </span></a>
+                        
+                        </nav>
+                    </header>
+                
+	      
+		<a href="https://djugei.github.io/rss.xml">(rss)</a>
+	      
+            
+
+        
+
+<article itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+        <h1 itemprop="headline">Optimath version 0.3.0 released</h1>
+        <span class="muted">
+    <svg style="margin-bottom:-3px" class="i-clock" viewBox="0 0 32 32"
+         width="16" height="16" fill="none" stroke="currentcolor"
+         stroke-linecap="round" stroke-linejoin="round" stroke-width="6.25%">
+        <circle cx="16" cy="16" r="14"/>
+        <path d="M16 8 L16 16 20 20"/>
+    </svg>
+    <span>4 minute read</span>
+    <svg style="margin-bottom: -3px" class="i-edit" viewBox="0 0 32 32"
+         width="16" height="16" fill="none" stroke="currentcolor"
+         stroke-linecap="round" stroke-linejoin="round" stroke-width="6.25%">
+        <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z"/>
+    </svg>
+
+    Published: 2020-01-13
+</span>
+    </header>
+    <div itemprop="articleBody">
+      <p>Optimath is an experimental const generics based linear algebra library that works without any allocations in no_std and utilizes simd.
+So now you can do fancy maths on embedded.</p>
+<p id="zola-continue-reading"><a name="continue-reading"></a></p>
+<h2 id="intro">Intro</h2>
+<p>This library is based around one type, <a href="https://docs.rs/optimath/0.3.0/optimath/struct.Vector.html">Vector</a> that passes on element-wise operations (+-*/) to its contained elements.
+Vectors have a size that is known at compile time thanks to const generics.</p>
+<pre style="background-color:#002b36;">
+<span style="color:#586e75;">// Vectors can be initalized from an rng,
+</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> a: Vector&lt;</span><span style="color:#268bd2;">i32</span><span style="color:#839496;">, 2000&gt; </span><span style="color:#859900;">=</span><span style="color:#839496;"> rng.</span><span style="color:#859900;">gen</span><span style="color:#839496;">();
+</span><span style="color:#586e75;">// from iterators
+</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> b: Vector&lt;</span><span style="color:#268bd2;">i32</span><span style="color:#839496;">, 2000&gt; </span><span style="color:#859900;">= </span><span style="color:#839496;">(</span><span style="color:#6c71c4;">0</span><span style="color:#859900;">..</span><span style="color:#6c71c4;">2000</span><span style="color:#839496;">).</span><span style="color:#859900;">collect</span><span style="color:#839496;">();
+</span><span style="color:#586e75;">// with an initalizer function
+</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> c: Vector&lt;</span><span style="color:#268bd2;">i32</span><span style="color:#839496;">, 2000&gt; </span><span style="color:#859900;">= </span><span style="color:#839496;">Vector::build_with_fn(|</span><span style="color:#268bd2;">i</span><span style="color:#839496;">| i </span><span style="color:#859900;">as </span><span style="color:#268bd2;">i32</span><span style="color:#839496;">);
+</span><span style="color:#586e75;">// or using Default
+</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> d: Vector&lt;</span><span style="color:#268bd2;">i32</span><span style="color:#839496;">, 2000&gt; </span><span style="color:#859900;">= Default</span><span style="color:#839496;">::default();
+
+</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> e </span><span style="color:#859900;">= &amp;</span><span style="color:#839496;">a </span><span style="color:#859900;">+ &amp;</span><span style="color:#839496;">b;
+</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> f </span><span style="color:#859900;">= &amp;</span><span style="color:#839496;">c </span><span style="color:#859900;">+ &amp;</span><span style="color:#839496;">d;
+</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> h </span><span style="color:#859900;">= &amp;</span><span style="color:#839496;">e </span><span style="color:#859900;">+ &amp;</span><span style="color:#839496;">f;
+</span></pre>
+<p>A <a href="https://docs.rs/optimath/0.3.0/optimath/struct.Matrix.html">Matrix</a> is therefore just a Vector&lt;Vector&lt;T&gt;&gt;,
+but has specific methods, namely transpose and matrix_multiply implemented on it.</p>
+<pre style="background-color:#002b36;">
+<span style="color:#859900;">use </span><span style="color:#839496;">optimath::Matrix;
+</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> a: Matrix&lt;</span><span style="color:#268bd2;">f32</span><span style="color:#839496;">, 2, 3&gt; </span><span style="color:#859900;">= Default</span><span style="color:#839496;">::default();
+</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> b: Matrix&lt;</span><span style="color:#268bd2;">f32</span><span style="color:#839496;">, 3, 4&gt; </span><span style="color:#859900;">= Default</span><span style="color:#839496;">::default();
+
+</span><span style="color:#586e75;">// matrix size is checked at compile time!
+</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> c: Matrix&lt;</span><span style="color:#268bd2;">f32</span><span style="color:#839496;">, 2, 4&gt; </span><span style="color:#859900;">=</span><span style="color:#839496;"> a.</span><span style="color:#859900;">matrix_multiply</span><span style="color:#839496;">(</span><span style="color:#859900;">&amp;</span><span style="color:#839496;">b);
+
+</span><span style="color:#586e75;">// transpositions are just views on matrices.
+// can be materialized on demand
+</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> c2 </span><span style="color:#859900;">=</span><span style="color:#839496;"> c.</span><span style="color:#859900;">transpose</span><span style="color:#839496;">().</span><span style="color:#859900;">materialize</span><span style="color:#839496;">().</span><span style="color:#859900;">transpose</span><span style="color:#839496;">().</span><span style="color:#859900;">materialize</span><span style="color:#839496;">();
+assert_eq!(c, c2);
+</span></pre>
+<p>You can find a lot of further information in the <a href="https://github.com/djugei/optimath/blob/master/README.md">README</a>.</p>
+<p>I have been mostly concerned with library design,
+if you need any specific operation please feel free to open an <a href="https://github.com/djugei/optimath/issues">issue</a> (or a pull request of course).</p>
+<h2 id="specialization">Specialization</h2>
+<p>Optimath not only uses const generics, but also specialization, for the full type adventure experience.</p>
+<p>There has been an <a href="https://github.com/rust-lang/rust/pull/67906">issue</a> that stopped you from calculating array sizes at compile time.
+A lot of this crates further development has been blocked on that.
+This issue has luckily been resolved by now, but the docs of version 0.3.0 still refer to it.
+You will therefore need quite a recent nightly to compile version 0.4.0 and onwards.</p>
+<p>Specialization is then used to override the generic pass-trough operations (+-*/) for specific types, like Vector&lt;f32&gt;.
+On those instead of doing element-wise addition SIMD can be used.
+Or at least that is how I initially did it.
+Checking the assembly (shoutout to <a href="https://github.com/gnzlbg/cargo-asm">cargo-asm</a>) I noticed that rustc/llvm already did perfect SIMD,
+especially with the help of explicit alignment.
+Doing some <a href="https://github.com/djugei/optimath/blob/master/benches/simd.rs">benchmarks</a> showed no gain from manually re-implementing that.</p>
+<p>They still need to pack/unpack &amp;[f32; 4] into one simd-register though.
+The next step is therefore to just always store the types in an SIMD compatible way.
+That had been blocked on the aforementioned issue.
+Some experimentation can be found in the (disabled) <a href="https://github.com/djugei/optimath/blob/master/src/layout.rs">layout module</a>.</p>
+<h2 id="purpose">Purpose</h2>
+<p>I started this library because there was no no_std capable linear algebra library available and I wanted to move move <a href="/categories/dumbnet">dumbnet</a> away from GenericArray now that const generics are available in rust.
+So the initial purpose of optimath was to fit my personal usecase.</p>
+<p>One possible direction is to make this the base of a rust BLAS library, there is a detailed planned changelog in the <a href="https://github.com/djugei/optimath/blob/master/README.md">README</a>.</p>
+<p>Its also intended as a playground and an exploration on how a const generics may be adapted in a linalg crate.
+I would be perfectly happy to merge this with for example ndarray at some point.</p>
+<p>Additionally it might be a motivating example for the rust devs working on const generics and specialization,
+showing off some real usecases. And finding compiler bugs, ofc :).</p>
+<p>For both of those groups there is some takeaways in the <a href="https://docs.rs/optimath/*/optimath/insights/index.html">insights module</a>.</p>
+<h2 id="no-std-notice">no_std notice</h2>
+<p>no_std users will have to comment out the dev-dependencies cause they seem to be polluting the real ones.
+i do not know how to turn that off sadly. With them commented out</p>
+<pre style="background-color:#002b36;">
+<span style="color:#268bd2;">cargo</span><span style="color:#839496;"> build</span><span style="color:#268bd2;"> --target</span><span style="color:#657b83;">=</span><span style="color:#839496;">armebv7r-none-eabihf</span><span style="color:#268bd2;"> --release
+</span></pre>
+<p>builds without errors. If anyone knows how to fix that don't hesitate to contact me!</p>
+<p><a href="https://crates.io/crates/optimath/">crate</a> <a href="https://docs.rs/optimath/">docs</a> <a href="https://github.com/djugei/optimath">repository</a></p>
+<p>You can also join the discussion on <a href="https://djugei.github.io/optimath-0-3-0/">reddit</a>!</p>
+
+    </div>
+
+    
+        <footer>
+            <hr>
+            <p>
+                
+                
+                    
+                    in <a href="https://djugei.github.io/categories/optimath/">optimath</a>
+                    <a href="https://djugei.github.io/categories/optimath/rss.xml">(rss)</a>
+                
+                
+                    and tagged
+                    
+                        <a href="https://djugei.github.io/tags/rust/">rust</a>
+                        <a href="https://djugei.github.io/tags/rust/rss.xml">(rss)</a>
+                        
+                    
+                
+            </p>
+        </footer>
+    
+</article>
+
+
+    </body>
+
+</html>

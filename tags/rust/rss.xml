@@ -7,7 +7,17 @@
         <generator>Zola</generator>
         <language>en</language>
         <atom:link href="https://djugei.github.io/tags/rust/rss.xml" rel="self" type="application/rss+xml"/>
-        <lastBuildDate>Fri, 10 Jan 2020 00:00:00 +0000</lastBuildDate>
+        <lastBuildDate>Mon, 13 Jan 2020 00:00:00 +0000</lastBuildDate>
+        
+            <item>
+                <title>Optimath version 0.3.0 released</title>
+                <pubDate>Mon, 13 Jan 2020 00:00:00 +0000</pubDate>
+                <link>https://djugei.github.io/optimath-0-3-0/</link>
+                <guid>https://djugei.github.io/optimath-0-3-0/</guid>
+                <description>&lt;p&gt;Optimath is an experimental const generics based linear algebra library that works without any allocations in no_std and utilizes simd.
+So now you can do fancy maths on embedded.&lt;&#x2F;p&gt;
+</description>
+            </item>
         
             <item>
                 <title>Why I like programming for #![no_std] in Rust (even without embedded)</title>
