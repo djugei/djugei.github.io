@@ -108,12 +108,12 @@ and while going one past the element is not UB,
 using it would be.
 We need a pointer to the whole array if we want to move around in it.</p>
 <pre style="background-color:#002b36;">
-<span style="color:#586e75;">// better code:
+<span style="color:#586e75;">// correct? code:
 </span><span style="color:#268bd2;">let </span><span style="color:#859900;">mut</span><span style="color:#839496;"> buf </span><span style="color:#859900;">= </span><span style="color:#839496;">[</span><span style="color:#6c71c4;">1</span><span style="color:#839496;">, </span><span style="color:#6c71c4;">2</span><span style="color:#839496;">];
 </span><span style="color:#268bd2;">let</span><span style="color:#839496;"> ptr </span><span style="color:#859900;">=</span><span style="color:#839496;"> buf.</span><span style="color:#859900;">as_mut_ptr</span><span style="color:#839496;">();
 </span><span style="color:#268bd2;">let</span><span style="color:#839496;"> ptr </span><span style="color:#859900;">= unsafe </span><span style="color:#839496;">{ ptr.</span><span style="color:#859900;">add</span><span style="color:#839496;">(</span><span style="color:#6c71c4;">1</span><span style="color:#839496;">) }
 </span></pre>
-<p>Pointed out by (CAD1997)[https://www.reddit.com/r/rust/comments/gide2n/im_bad_at_unsafe/fqeg7vb/].</p>
+<p>Pointed out by <a href="https://www.reddit.com/r/rust/comments/gide2n/im_bad_at_unsafe/fqeg7vb/">CAD1997</a>.</p>
 <h2 id="alignment-issues">Alignment-issues</h2>
 <p>In the data structure I was building each chunk would have
 a fixed size/capacity and link to the next chunk.
