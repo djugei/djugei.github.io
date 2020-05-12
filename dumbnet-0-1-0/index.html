@@ -77,7 +77,7 @@
     </header>
     <div itemprop="articleBody">
       <p>Mostly for fun I developed a small artificial neural network library that does all its work on the stack, no operating system or allocator needed.</p>
-<p id="zola-continue-reading"><a name="continue-reading"></a></p>
+<span id="continue-reading"></span>
 <p>It works by, at compile time, building the networks Type layer by layer from output to input.</p>
 <p>I based it off of GenericArray back when const generics were not a thing yet in rust. Its a nice hack but produces some... <a href="https://github.com/djugei/dumbnet/blob/master/src/convolution.rs#L15-L62">interesting trait bounds</a>. I intend to move this to something const generics based step by step to showcase how much nicer things can look nowadays.</p>
 <p>(also found a bug in rustfmt, were those comments doc-comments rustfmt would join the next line into them, breaking the code)</p>

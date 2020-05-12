@@ -7,7 +7,17 @@
         <generator>Zola</generator>
         <language>en</language>
         <atom:link href="https://djugei.github.io/tags/rust/rss.xml" rel="self" type="application/rss+xml"/>
-        <lastBuildDate>Mon, 13 Jan 2020 00:00:00 +0000</lastBuildDate>
+        <lastBuildDate>Tue, 12 May 2020 00:00:00 +0000</lastBuildDate>
+        
+            <item>
+                <title>Im bad at unsafe {}</title>
+                <pubDate>Tue, 12 May 2020 00:00:00 +0000</pubDate>
+                <link>https://djugei.github.io/bad-at-unsafe/</link>
+                <guid>https://djugei.github.io/bad-at-unsafe/</guid>
+                <description>&lt;h2 id=&quot;intro&quot;&gt;Intro&lt;&#x2F;h2&gt;
+&lt;p&gt;I tried writing a Chunked-List data structure and made all the mistakes while using unsafe for that.&lt;&#x2F;p&gt;
+</description>
+            </item>
         
             <item>
                 <title>Optimath version 0.3.0 released</title>
