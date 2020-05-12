@@ -1,6 +1,6 @@
 +++
 title = "Im bad at unsafe {}"
-date = 2020-05-09
+date = 2020-05-12
 [taxonomies]
 tags = ["rust"]
 categories = []
