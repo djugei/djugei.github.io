@@ -39,6 +39,19 @@ let ptr = unsafe { ptr.add(1) }
 
 I caught that because I had tests and they failed.
 
+So turns out that "better" is not good enough!
+The pointer points to the first _element_
+and while going one past the element is not UB,
+using it would be.
+We need a pointer to the whole array if we want to move around in it.
+```rust
+// better code:
+let mut buf = [1, 2];
+let ptr = buf.as_mut_ptr();
+let ptr = unsafe { ptr.add(1) }
+```
+Pointed out by (CAD1997)[https://www.reddit.com/r/rust/comments/gide2n/im_bad_at_unsafe/fqeg7vb/].
+
 ## Alignment-issues
 In the data structure I was building each chunk would have
 a fixed size/capacity and link to the next chunk.
