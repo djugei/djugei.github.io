@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title>Devblog of Djugei</title>
+
+      
+        <link rel="alternate" type="application/rss+xml" title="RSS" href="https://djugei.github.io/rss.xml">
+      
+
+      
+          <link rel="stylesheet" href="https://djugei.github.io/site.css">
+      
+
+      
+      
+    </head>
+
+    <body class="hack dark main container">
+            
+                
+                    <header>
+                        <nav itemscope itemtype="http://schema.org/SiteNavigationElement">
+                        
+                            <a itemprop="url"
+                               class=""
+                               href="https:&#x2F;&#x2F;djugei.github.io">
+                                <span itemprop="name">Home
+                                </span></a>
+                        
+                            <a itemprop="url"
+                               class=""
+                               href="https:&#x2F;&#x2F;djugei.github.io&#x2F;categories">
+                                <span itemprop="name">Categories
+                                </span></a>
+                        
+                            <a itemprop="url"
+                               class=""
+                               href="https:&#x2F;&#x2F;djugei.github.io&#x2F;tags">
+                                <span itemprop="name">Tags
+                                </span></a>
+                        
+                        </nav>
+                    </header>
+                
+	      
+		<a href="https://djugei.github.io/rss.xml">(rss)</a>
+	      
+            
+
+        
+
+<article itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+        <h1 itemprop="headline">fix-rat published</h1>
+        <span class="muted">
+    <svg style="margin-bottom:-3px" class="i-clock" viewBox="0 0 32 32"
+         width="16" height="16" fill="none" stroke="currentcolor"
+         stroke-linecap="round" stroke-linejoin="round" stroke-width="6.25%">
+        <circle cx="16" cy="16" r="14"/>
+        <path d="M16 8 L16 16 20 20"/>
+    </svg>
+    <span>2 minute read</span>
+    <svg style="margin-bottom: -3px" class="i-edit" viewBox="0 0 32 32"
+         width="16" height="16" fill="none" stroke="currentcolor"
+         stroke-linecap="round" stroke-linejoin="round" stroke-width="6.25%">
+        <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z"/>
+    </svg>
+
+    Published: 2021-01-23
+</span>
+    </header>
+    <div itemprop="articleBody">
+      <p><a href="https://crates.io/crates/fix-rat">Fix-rat</a> is a rational number with a denominator chosen at compile time.</p>
+<span id="continue-reading"></span>
+<p>While working on a different project
+I found a need for a number type that is kinda like floats.
+It needs to do maths and represent numbers in smaller increments than one
+but also had the important requirement of having associative operations,
+so a + b + c == a + c + b in every case.</p>
+<p>This might seem like a simple request and
+you might even be surprised why this is even mentioned,
+after all that is simply how numbers work, right?</p>
+<p>Sadly floats can not satisfy that property
+since their rounding behaviour is a bit surprising,
+especially around numbers with different exponents.</p>
+<p>The already existing crate <a href="https://crates.io/crates/num-rational">num-rational</a> is also not very usable,
+as it panics whenever it looses precision and does a huge amount of calculation to re-normalize itself
+(turning 2/10 into 1/5)
+even on mundane operations .
+This is required though to get proper equality operations and not continuously &quot;bloat&quot; the number(s).</p>
+<p>So I made <a href="https://crates.io/crates/fix-rat">fix-rat</a>.
+It utilizes const-generics to basically re-scale integers from i64::MIN..i64::MAX to whatever range you desire.</p>
+<pre style="background-color:#002b36;">
+<span style="color:#859900;">use </span><span style="color:#839496;">fix_rat::Rational;
+</span><span style="color:#268bd2;">type </span><span style="color:#839496;">R </span><span style="color:#859900;">= </span><span style="color:#839496;">Rational&lt;</span><span style="background-color:#6e2e32;color:#839496;">{</span><span style="color:#839496;"> </span><span style="color:#268bd2;">i64</span><span style="color:#839496;">::</span><span style="color:#cb4b16;">MAX </span><span style="color:#859900;">/ </span><span style="color:#6c71c4;">64</span><span style="color:#839496;">}</span><span style="color:#859900;">&gt;</span><span style="color:#839496;">;
+
+</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> a: R </span><span style="color:#859900;">= </span><span style="color:#6c71c4;">60.</span><span style="color:#859900;">into</span><span style="color:#839496;">();
+</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> b: R </span><span style="color:#859900;">= </span><span style="color:#6c71c4;">5.0</span><span style="color:#839496;">.</span><span style="color:#859900;">into</span><span style="color:#839496;">();
+</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> c </span><span style="color:#859900;">=</span><span style="color:#839496;"> a.</span><span style="color:#859900;">wrapping_add</span><span style="color:#839496;">(b);
+
+</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> c </span><span style="color:#859900;">=</span><span style="color:#839496;"> c.</span><span style="color:#859900;">to_i64</span><span style="color:#839496;">();
+assert_eq!(c, </span><span style="color:#859900;">-</span><span style="color:#6c71c4;">63</span><span style="color:#839496;">);
+</span></pre>
+<p>The code is not very complex, but someone had to write it :).
+The <a href="https://docs.rs/treelike/*/fix-rat/">documentation</a> contains some useful tips
+on how to handle numbers in multithreaded scenarios
+without loosing determinism.</p>
+<p>I hope the code is as useful to someone else as it is to me.
+Open an issue if use-case 4 from the documentation
+(one- or two-byte floating point numbers) is relevant to you.</p>
+<p><a href="https://crates.io/crates/fix-rat">crate</a> <a href="https://docs.rs/treelike/*/fix-rat/">docs</a> <a href="https://github.com/djugei/pixelherd/fix-rat">repository</a></p>
+
+    </div>
+
+    
+        <footer>
+            <hr>
+            <p>
+                
+                
+                    
+                    in <a href="https://djugei.github.io/categories/fix-rat/">fix-rat</a>
+                    <a href="https://djugei.github.io/categories/fix-rat/rss.xml">(rss)</a>
+                
+                
+                    and tagged
+                    
+                        <a href="https://djugei.github.io/tags/rust/">rust</a>
+                        <a href="https://djugei.github.io/tags/rust/rss.xml">(rss)</a>
+                        
+                    
+                
+            </p>
+        </footer>
+    
+</article>
+
+
+    </body>
+
+</html>
