@@ -46,7 +46,7 @@ assert_eq!(c, -63);
 ```
 
 The code is not very complex, but someone had to write it :).
-The [documentation](https://docs.rs/treelike/*/fix-rat/) contains some useful tips
+The [documentation](https://docs.rs//fix-rat/) contains some useful tips
 on how to handle numbers in multithreaded scenarios
 without loosing determinism.
 
@@ -54,4 +54,4 @@ I hope the code is as useful to someone else as it is to me.
 Open an issue if use-case 4 from the documentation
 (one- or two-byte floating point numbers) is relevant to you.
 
-[crate](https://crates.io/crates/fix-rat) [docs](https://docs.rs/treelike/*/fix-rat/) [repository](https://github.com/djugei/pixelherd/fix-rat)
+[crate](https://crates.io/crates/fix-rat) [docs](https://docs.rs/fix-rat/) [repository](https://github.com/djugei/pixelherd/tree/main/fix-rat)
