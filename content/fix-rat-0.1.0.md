@@ -14,7 +14,7 @@ While working on a different project
 I found a need for a number type that is kinda like floats.
 It needs to do maths and represent numbers in smaller increments than one
 but also had the important requirement of having associative operations,
-so a + b + c == a + c + b in every case.
+so (base + update\_alpha) + update\_beta == (base + update\_beta) + update\_alpha in every case.
 
 This might seem like a simple request and
 you might even be surprised why this is even mentioned,
@@ -27,7 +27,7 @@ especially around numbers with different exponents.
 The already existing crate [num-rational](https://crates.io/crates/num-rational) is also not very usable,
 as it panics whenever it looses precision and does a huge amount of calculation to re-normalize itself
 (turning 2/10 into 1/5)
-even on mundane operations .
+even on mundane operations.
 This is required though to get proper equality operations and not continuously "bloat" the number(s).
 
 So I made [fix-rat](https://crates.io/crates/fix-rat).
@@ -46,7 +46,7 @@ assert_eq!(c, -63);
 ```
 
 The code is not very complex, but someone had to write it :).
-The [documentation](https://docs.rs//fix-rat/) contains some useful tips
+The [documentation](https://docs.rs/fix-rat/) contains some useful tips
 on how to handle numbers in multithreaded scenarios
 without loosing determinism.
 
