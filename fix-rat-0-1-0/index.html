@@ -82,7 +82,7 @@
 I found a need for a number type that is kinda like floats.
 It needs to do maths and represent numbers in smaller increments than one
 but also had the important requirement of having associative operations,
-so a + b + c == a + c + b in every case.</p>
+so (base + update_alpha) + update_beta == (base + update_beta) + update_alpha in every case.</p>
 <p>This might seem like a simple request and
 you might even be surprised why this is even mentioned,
 after all that is simply how numbers work, right?</p>
@@ -92,7 +92,7 @@ especially around numbers with different exponents.</p>
 <p>The already existing crate <a href="https://crates.io/crates/num-rational">num-rational</a> is also not very usable,
 as it panics whenever it looses precision and does a huge amount of calculation to re-normalize itself
 (turning 2/10 into 1/5)
-even on mundane operations .
+even on mundane operations.
 This is required though to get proper equality operations and not continuously &quot;bloat&quot; the number(s).</p>
 <p>So I made <a href="https://crates.io/crates/fix-rat">fix-rat</a>.
 It utilizes const-generics to basically re-scale integers from i64::MIN..i64::MAX to whatever range you desire.</p>
@@ -108,7 +108,7 @@ It utilizes const-generics to basically re-scale integers from i64::MIN..i64::MA
 assert_eq!(c, </span><span style="color:#859900;">-</span><span style="color:#6c71c4;">63</span><span style="color:#839496;">);
 </span></pre>
 <p>The code is not very complex, but someone had to write it :).
-The <a href="https://docs.rs//fix-rat/">documentation</a> contains some useful tips
+The <a href="https://docs.rs/fix-rat/">documentation</a> contains some useful tips
 on how to handle numbers in multithreaded scenarios
 without loosing determinism.</p>
 <p>I hope the code is as useful to someone else as it is to me.
