@@ -5,7 +5,6 @@ date = 2020-05-12
 tags = ["rust"]
 categories = []
 +++
-## Intro
 I tried writing a Chunked-List data structure and made all the mistakes while using unsafe for that.
 
 <!-- more --> 
