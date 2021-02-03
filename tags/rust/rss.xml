@@ -7,7 +7,16 @@
         <generator>Zola</generator>
         <language>en</language>
         <atom:link href="https://djugei.github.io/tags/rust/rss.xml" rel="self" type="application/rss+xml"/>
-        <lastBuildDate>Sat, 23 Jan 2021 00:00:00 +0000</lastBuildDate>
+        <lastBuildDate>Wed, 03 Feb 2021 00:00:00 +0000</lastBuildDate>
+        
+            <item>
+                <title>anti-r published</title>
+                <pubDate>Wed, 03 Feb 2021 00:00:00 +0000</pubDate>
+                <link>https://djugei.github.io/anti-r-0-9/</link>
+                <guid>https://djugei.github.io/anti-r-0-9/</guid>
+                <description>&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;crates.io&#x2F;crates&#x2F;anti-r&quot;&gt;anti-r&lt;&#x2F;a&gt; is a spatial data structure that can outperform R-Trees in many cases.&lt;&#x2F;p&gt;
+</description>
+            </item>
         
             <item>
                 <title>fix-rat published</title>
@@ -23,8 +32,7 @@
                 <pubDate>Tue, 12 May 2020 00:00:00 +0000</pubDate>
                 <link>https://djugei.github.io/bad-at-unsafe/</link>
                 <guid>https://djugei.github.io/bad-at-unsafe/</guid>
-                <description>&lt;h2 id=&quot;intro&quot;&gt;Intro&lt;&#x2F;h2&gt;
-&lt;p&gt;I tried writing a Chunked-List data structure and made all the mistakes while using unsafe for that.&lt;&#x2F;p&gt;
+                <description>&lt;p&gt;I tried writing a Chunked-List data structure and made all the mistakes while using unsafe for that.&lt;&#x2F;p&gt;
 </description>
             </item>
         

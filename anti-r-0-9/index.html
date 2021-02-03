@@ -57,7 +57,7 @@
 
 <article itemscope itemtype="http://schema.org/BlogPosting">
     <header>
-        <h1 itemprop="headline">Introduction to my Blog</h1>
+        <h1 itemprop="headline">anti-r published</h1>
         <span class="muted">
     <svg style="margin-bottom:-3px" class="i-clock" viewBox="0 0 32 32"
          width="16" height="16" fill="none" stroke="currentcolor"
@@ -72,19 +72,48 @@
         <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z"/>
     </svg>
 
-    Published: 2020-01-07
+    Published: 2021-02-03
 </span>
     </header>
     <div itemprop="articleBody">
-      <p>This blog will mainly contain release announcements for my various projects, some deep dives into designs or optimizations I did. Also some opinions sometimes.</p>
-<span id="continue-reading"></span>
-<p>It seems like a hard requirement for being a rust developer is to have a blog and a twitter, I don't like twitter so here is my blog :D.</p>
-<p>It will probably be nice to have some place to write down long-form thoughts and share them with others.
-When writing about tech I want the posts to be a mini-tutorial, too, so to get started:</p>
-<p>I built this site using zola, the &quot;after-dark&quot; theme and github pages. Just straightforward following the tutorials, no real customization.
-The <a href="https://github.com/djugei/djugei.github.io">git repository</a> has two branches, the &quot;raw&quot; branch contains the zola configuration and markdown content, while the &quot;master&quot; branch contains the rendered page, ready to serve. I have both repositories checked out locally in twin Folders. The deploy.sh script builds and copies the rendered pages to the master branch.</p>
-<p>i made some slight adjustments to the theme, namely adding rss links everywhere. Sadly i had to copy a lot of the themes templates to do that, not sure if there is a better way (besides forking the template).</p>
-<p>I have also imported all my reddit posts to get started.</p>
+      <p><a href="https://crates.io/crates/anti-r">anti-r</a> is a spatial data structure that can outperform R-Trees in many cases.</p>
+<span id="continue-reading"></span><h2 id="intro">Intro</h2>
+<p>In a multi-year research effort in a secret government underground bunker
+my team and I developed a bleeding edge data structure
+that can outperform the obsolete state-of-the-art spatial data structure, R-Trees, in many cases.</p>
+<p>This will be a very theory heavy blog post, introducing the <a href="https://youtube.com/">research paper</a>.
+Readers are advised to have at least a bachelors,
+preferably a master degree in computer science.</p>
+<h2 id="data-structure">Data Structure</h2>
+<p>The fancy new data structure is... a sorted slice.</p>
+<p>Sorted lists are a representation of a binary search tree.
+They therefore have the same O(n) complexity on all operations as R-Trees:
+n*log(n) for creation,
+log(n) for searches.</p>
+<p>They even have the same nice property of devoting more &quot;focus&quot; to denser regions,
+simply because each element occupies exactly one slot.</p>
+<p>In fact one of the first steps when creating a high-quality R-Tree is to sort the input.
+This crate simply skips the next step of building an R-Tree from the implicit binary tree.</p>
+<h2 id="performance">Performance</h2>
+<p>The benchmarks included in this repository suggest that
+this approach (obviously) beats R-Trees on creation
+and on full updates for any number of elements.
+More interestingly it also beats query performance for up to 100_000 elements.
+Starting at around 200_000 elements R-Trees start winning.
+I suspect that's the point at which the data does not fit into L1-cache any more
+and starts incurring the same cache-misses from indirection that R-Trees do.</p>
+<h2 id="drawbacks">Drawbacks</h2>
+<p>Besides being slower for a large number of elements,
+anti-r only supports points as geometry primitives.
+If you want to, for example, insert triangles you will have to
+manually decompose them into their outermost points and insert those.</p>
+<h2 id="outro">Outro</h2>
+<p>So if you are doing spatial queries on a medium number of elements,
+or chunk your elements into medium-sized chunks for progressive loading etc.,
+this crate might be for you. Or you can just... use a sorted Vec I guess.</p>
+<p>This crate is no_std, with an alloc feature enabled by default.
+The alloc feature enables the SpatialVec, without it only SpatialSlice is available.</p>
+<p><a href="https://crates.io/crates/anti-r">crate</a> <a href="https://docs.rs/anti-r/">docs</a> <a href="https://github.com/djugei/pixelherd/anti-r">repository</a></p>
 
     </div>
 
@@ -98,8 +127,8 @@ The <a href="https://github.com/djugei/djugei.github.io">git repository</a> has 
                 
                 
                     
-                    in <a href="https://djugei.github.io/categories/blog/">blog</a>
-                    <a href="https://djugei.github.io/categories/blog/rss.xml">(rss)</a>
+                    in <a href="https://djugei.github.io/categories/anti-r/">anti-r</a>
+                    <a href="https://djugei.github.io/categories/anti-r/rss.xml">(rss)</a>
                 
                 
                         
@@ -109,18 +138,6 @@ The <a href="https://github.com/djugei/djugei.github.io">git repository</a> has 
                     
                         <a href="https://djugei.github.io/tags/rust/">rust</a>
                         <a href="https://djugei.github.io/tags/rust/rss.xml">(rss)</a>
-                        
-                            
-                                
-                                    and
-                                
-                            
-                        
-                    
-                        <a href="https://djugei.github.io/tags/web/">web</a>
-                        <a href="https://djugei.github.io/tags/web/rss.xml">(rss)</a>
-                        
-                            
                         
                     
                 
