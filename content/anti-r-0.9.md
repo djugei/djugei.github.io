@@ -16,7 +16,7 @@ In a multi-year research effort in a secret government underground bunker
 my team and I developed a bleeding edge data structure
 that can outperform the obsolete state-of-the-art spatial data structure, R-Trees, in many cases.
 
-This will be a very theory heavy blog post, introducing the [research paper](https://youtube.com/).
+This will be a very theory heavy blog post, introducing the [research paper](https://www.youtube.com/watch?v=dQw4w9WgXcQ).
 Readers are advised to have at least a bachelors,
 preferably a master degree in computer science.
 
