@@ -62,4 +62,4 @@ This crate is no\_std, with an alloc feature enabled by default.
 The alloc feature enables the SpatialVec, without it only SpatialSlice is available.
 
 
-[crate](https://crates.io/crates/anti-r) [docs](https://docs.rs/anti-r/) [repository](https://github.com/djugei/pixelherd/anti-r)
+[crate](https://crates.io/crates/anti-r) [docs](https://docs.rs/anti-r/) [repository](https://github.com/djugei/pixelherd/tree/main/anti-r)
