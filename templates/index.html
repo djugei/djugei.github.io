@@ -35,12 +35,12 @@
                                 <span itemprop="name">{{ item.name }}
                                 </span></a>
                         {% endfor %}
+                        {% if config.generate_rss %}
+                            <a href="{{ get_url(path="rss.xml") | safe }}">(rss)</a>
+                        {% endif %}
                         </nav>
                     </header>
                 {% endif %}
-	      {% if config.generate_rss %}
-		<a href="{{ get_url(path="rss.xml") | safe }}">(rss)</a>
-	      {% endif %}
             {% endblock header %}
 
         {% block content %}

@@ -19,13 +19,19 @@
                 {% if config.extra.author %}
                     Published by {{ config.extra.author }}
                 {% endif %}
+                {% if page.taxonomies.categories or page.taxonomies.tags %}
+					click on the <a href="{{ get_url(path="rss.xml") | safe }}">(rss)</a> links to subscribe to categories or tags you care about.<br/>
+                {% endif %}
                 {% if page.taxonomies.categories %}
                     {% set category = page.taxonomies.categories[0] %}
                     in <a href="{{ get_taxonomy_url(kind="categories", name=category) | safe }}">{{ category }}</a>
                     <a href="{{ get_taxonomy_url(kind="categories", name=category) | safe }}rss.xml">(rss)</a>
                 {% endif %}
                 {% if page.taxonomies.tags %}
-                    and tagged
+                        {% if page.taxonomies.categories %}
+                            and
+                        {% endif %}
+                    tagged
                     {% for tag in page.taxonomies.tags %}
                         <a href="{{ get_taxonomy_url(kind="tags", name=tag) | safe }}">{{ tag }}</a>
                         <a href="{{ get_taxonomy_url(kind="tags", name=tag) | safe }}rss.xml">(rss)</a>
