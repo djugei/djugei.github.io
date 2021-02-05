@@ -42,7 +42,6 @@ this approach (obviously) beats R-Trees on creation
 and on full updates for any number of elements.
 More interestingly it also beats query performance for up to 1000 elements.
 Starting at around 15\_000 elements R-Trees start winning.
-I suspect that's the point at which the data does not fit into L1-cache any more
 and starts incurring the same cache-misses from indirection that R-Trees do.
 
 ## Drawbacks
