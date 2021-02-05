@@ -76,7 +76,7 @@
 </span>
     </header>
     <div itemprop="articleBody">
-      <p><a href="https://crates.io/crates/anti-r">anti-r</a> is a spatial data structure that can outperform R-Trees in many cases.</p>
+      <p><a href="https://crates.io/crates/anti-r">anti-r</a> is a spatial data structure that can outperform R-Trees in a few cases.</p>
 <span id="continue-reading"></span><h2 id="intro">Intro</h2>
 <p>In a multi-year research effort in a secret government underground bunker
 my team and I developed a bleeding edge data structure
@@ -98,8 +98,8 @@ This crate simply skips the next step of building an R-Tree from the implicit bi
 <p>The benchmarks included in this repository suggest that
 this approach (obviously) beats R-Trees on creation
 and on full updates for any number of elements.
-More interestingly it also beats query performance for up to 100_000 elements.
-Starting at around 200_000 elements R-Trees start winning.
+More interestingly it also beats query performance for up to 1000 elements.
+Starting at around 15_000 elements R-Trees start winning.
 I suspect that's the point at which the data does not fit into L1-cache any more
 and starts incurring the same cache-misses from indirection that R-Trees do.</p>
 <h2 id="drawbacks">Drawbacks</h2>
