@@ -65,7 +65,7 @@
         <circle cx="16" cy="16" r="14"/>
         <path d="M16 8 L16 16 20 20"/>
     </svg>
-    <span>3 minute read</span>
+    <span>2 minute read</span>
     <svg style="margin-bottom: -3px" class="i-edit" viewBox="0 0 32 32"
          width="16" height="16" fill="none" stroke="currentcolor"
          stroke-linecap="round" stroke-linejoin="round" stroke-width="6.25%">
@@ -100,7 +100,6 @@ this approach (obviously) beats R-Trees on creation
 and on full updates for any number of elements.
 More interestingly it also beats query performance for up to 1000 elements.
 Starting at around 15_000 elements R-Trees start winning.
-I suspect that's the point at which the data does not fit into L1-cache any more
 and starts incurring the same cache-misses from indirection that R-Trees do.</p>
 <h2 id="drawbacks">Drawbacks</h2>
 <p>Besides being slower for a large number of elements,
