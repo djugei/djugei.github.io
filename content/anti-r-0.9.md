@@ -6,7 +6,7 @@ tags = ["rust"]
 categories = ["anti-r"]
 +++
 
-[anti-r](https://crates.io/crates/anti-r) is a spatial data structure that can outperform R-Trees in many cases.
+[anti-r](https://crates.io/crates/anti-r) is a spatial data structure that can outperform R-Trees in a few cases.
 
 <!-- more --> 
 
@@ -40,8 +40,8 @@ This crate simply skips the next step of building an R-Tree from the implicit bi
 The benchmarks included in this repository suggest that
 this approach (obviously) beats R-Trees on creation
 and on full updates for any number of elements.
-More interestingly it also beats query performance for up to 100\_000 elements.
-Starting at around 200\_000 elements R-Trees start winning.
+More interestingly it also beats query performance for up to 1000 elements.
+Starting at around 15\_000 elements R-Trees start winning.
 I suspect that's the point at which the data does not fit into L1-cache any more
 and starts incurring the same cache-misses from indirection that R-Trees do.
 
