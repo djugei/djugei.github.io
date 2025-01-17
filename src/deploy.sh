@@ -1,3 +1,3 @@
 #!/bin/bash
-~/zola/target/release/zola build
-rsync -vr --delete --exclude=".*" public/ ../djugei.github.io/
+zola build
+rsync -vr --exclude=".*" public/ ../
