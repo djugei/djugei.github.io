@@ -30,7 +30,7 @@ let f = &c + &d;
 let h = &e + &f;
 ```
 
-A [Matrix](https://docs.rs/optimath/0.3.0/optimath/struct.Matrix.html) is therefore just a Vector\<Vector\<T\>\>,
+A [Matrix](https://docs.rs/optimath/0.3.0/optimath/type.Matrix.html) is therefore just a Vector\<Vector\<T\>\>,
 but has specific methods, namely transpose and matrix_multiply implemented on it.
 
 ```rust

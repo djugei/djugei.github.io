@@ -12,7 +12,7 @@ Mostly for fun I developed a small artificial neural network library that does a
 
 It works by, at compile time, building the networks Type layer by layer from output to input.
 
-I based it off of GenericArray back when const generics were not a thing yet in rust. Its a nice hack but produces some... [interesting trait bounds](https://github.com/djugei/dumbnet/blob/master/src/convolution.rs#L15-L62). I intend to move this to something const generics based step by step to showcase how much nicer things can look nowadays.
+I based it off of GenericArray back when const generics were not a thing yet in rust. Its a nice hack but produces some... [interesting trait bounds](https://github.com/djugei/dumbnet/blob/80781efa58ea7d5fbd9203602876f9234d0c1ebe/src/convolution.rs#L19). I intend to move this to something const generics based step by step to showcase how much nicer things can look nowadays.
 
 (also found a bug in rustfmt, were those comments doc-comments rustfmt would join the next line into them, breaking the code)
 
