@@ -10,8 +10,6 @@
       <title>Devblog of Djugei</title>
 
       
-        <link rel="alternate" type="application/rss+xml" title="RSS" href="https://djugei.github.io/rss.xml">
-      
 
       
           <link rel="stylesheet" href="https://djugei.github.io/site.css">
@@ -46,8 +44,6 @@
                                 </span></a>
                         
                         
-                            <a href="https://djugei.github.io/rss.xml">(rss)</a>
-                        
                         </nav>
                     </header>
                 
@@ -81,35 +77,33 @@ So now you can do fancy maths on embedded.</p>
 <span id="continue-reading"></span><h2 id="intro">Intro</h2>
 <p>This library is based around one type, <a href="https://docs.rs/optimath/0.3.0/optimath/struct.Vector.html">Vector</a> that passes on element-wise operations (+-*/) to its contained elements.
 Vectors have a size that is known at compile time thanks to const generics.</p>
-<pre style="background-color:#002b36;">
-<span style="color:#586e75;">// Vectors can be initalized from an rng,
-</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> a: Vector&lt;</span><span style="color:#268bd2;">i32</span><span style="color:#839496;">, 2000&gt; </span><span style="color:#859900;">=</span><span style="color:#839496;"> rng.</span><span style="color:#859900;">gen</span><span style="color:#839496;">();
-</span><span style="color:#586e75;">// from iterators
-</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> b: Vector&lt;</span><span style="color:#268bd2;">i32</span><span style="color:#839496;">, 2000&gt; </span><span style="color:#859900;">= </span><span style="color:#839496;">(</span><span style="color:#6c71c4;">0</span><span style="color:#859900;">..</span><span style="color:#6c71c4;">2000</span><span style="color:#839496;">).</span><span style="color:#859900;">collect</span><span style="color:#839496;">();
-</span><span style="color:#586e75;">// with an initalizer function
-</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> c: Vector&lt;</span><span style="color:#268bd2;">i32</span><span style="color:#839496;">, 2000&gt; </span><span style="color:#859900;">= </span><span style="color:#839496;">Vector::build_with_fn(|</span><span style="color:#268bd2;">i</span><span style="color:#839496;">| i </span><span style="color:#859900;">as </span><span style="color:#268bd2;">i32</span><span style="color:#839496;">);
-</span><span style="color:#586e75;">// or using Default
-</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> d: Vector&lt;</span><span style="color:#268bd2;">i32</span><span style="color:#839496;">, 2000&gt; </span><span style="color:#859900;">= Default</span><span style="color:#839496;">::default();
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">&#x2F;&#x2F; Vectors can be initalized from an rng,
+let a: Vector&lt;i32, 2000&gt; = rng.gen();
+&#x2F;&#x2F; from iterators
+let b: Vector&lt;i32, 2000&gt; = (0..2000).collect();
+&#x2F;&#x2F; with an initalizer function
+let c: Vector&lt;i32, 2000&gt; = Vector::build_with_fn(|i| i as i32);
+&#x2F;&#x2F; or using Default
+let d: Vector&lt;i32, 2000&gt; = Default::default();
 
-</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> e </span><span style="color:#859900;">= &amp;</span><span style="color:#839496;">a </span><span style="color:#859900;">+ &amp;</span><span style="color:#839496;">b;
-</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> f </span><span style="color:#859900;">= &amp;</span><span style="color:#839496;">c </span><span style="color:#859900;">+ &amp;</span><span style="color:#839496;">d;
-</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> h </span><span style="color:#859900;">= &amp;</span><span style="color:#839496;">e </span><span style="color:#859900;">+ &amp;</span><span style="color:#839496;">f;
-</span></pre>
-<p>A <a href="https://docs.rs/optimath/0.3.0/optimath/struct.Matrix.html">Matrix</a> is therefore just a Vector&lt;Vector&lt;T&gt;&gt;,
+let e = &amp;a + &amp;b;
+let f = &amp;c + &amp;d;
+let h = &amp;e + &amp;f;
+</code></pre>
+<p>A <a href="https://docs.rs/optimath/0.3.0/optimath/type.Matrix.html">Matrix</a> is therefore just a Vector&lt;Vector&lt;T&gt;&gt;,
 but has specific methods, namely transpose and matrix_multiply implemented on it.</p>
-<pre style="background-color:#002b36;">
-<span style="color:#859900;">use </span><span style="color:#839496;">optimath::Matrix;
-</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> a: Matrix&lt;</span><span style="color:#268bd2;">f32</span><span style="color:#839496;">, 2, 3&gt; </span><span style="color:#859900;">= Default</span><span style="color:#839496;">::default();
-</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> b: Matrix&lt;</span><span style="color:#268bd2;">f32</span><span style="color:#839496;">, 3, 4&gt; </span><span style="color:#859900;">= Default</span><span style="color:#839496;">::default();
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">use optimath::Matrix;
+let a: Matrix&lt;f32, 2, 3&gt; = Default::default();
+let b: Matrix&lt;f32, 3, 4&gt; = Default::default();
 
-</span><span style="color:#586e75;">// matrix size is checked at compile time!
-</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> c: Matrix&lt;</span><span style="color:#268bd2;">f32</span><span style="color:#839496;">, 2, 4&gt; </span><span style="color:#859900;">=</span><span style="color:#839496;"> a.</span><span style="color:#859900;">matrix_multiply</span><span style="color:#839496;">(</span><span style="color:#859900;">&amp;</span><span style="color:#839496;">b);
+&#x2F;&#x2F; matrix size is checked at compile time!
+let c: Matrix&lt;f32, 2, 4&gt; = a.matrix_multiply(&amp;b);
 
-</span><span style="color:#586e75;">// transpositions are just views on matrices.
-// can be materialized on demand
-</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> c2 </span><span style="color:#859900;">=</span><span style="color:#839496;"> c.</span><span style="color:#859900;">transpose</span><span style="color:#839496;">().</span><span style="color:#859900;">materialize</span><span style="color:#839496;">().</span><span style="color:#859900;">transpose</span><span style="color:#839496;">().</span><span style="color:#859900;">materialize</span><span style="color:#839496;">();
+&#x2F;&#x2F; transpositions are just views on matrices.
+&#x2F;&#x2F; can be materialized on demand
+let c2 = c.transpose().materialize().transpose().materialize();
 assert_eq!(c, c2);
-</span></pre>
+</code></pre>
 <p>You can find a lot of further information in the <a href="https://github.com/djugei/optimath/blob/master/README.md">README</a>.</p>
 <p>I have been mostly concerned with library design,
 if you need any specific operation please feel free to open an <a href="https://github.com/djugei/optimath/issues">issue</a> (or a pull request of course).</p>
@@ -141,9 +135,8 @@ showing off some real usecases. And finding compiler bugs, ofc :).</p>
 <h2 id="no-std-notice">no_std notice</h2>
 <p>no_std users will have to comment out the dev-dependencies cause they seem to be polluting the real ones.
 i do not know how to turn that off sadly. With them commented out</p>
-<pre style="background-color:#002b36;">
-<span style="color:#268bd2;">cargo</span><span style="color:#839496;"> build</span><span style="color:#268bd2;"> --target</span><span style="color:#657b83;">=</span><span style="color:#839496;">armebv7r-none-eabihf</span><span style="color:#268bd2;"> --release
-</span></pre>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">cargo build --target=armebv7r-none-eabihf --release
+</code></pre>
 <p>builds without errors. If anyone knows how to fix that don't hesitate to contact me!</p>
 <p><a href="https://crates.io/crates/optimath/">crate</a> <a href="https://docs.rs/optimath/">docs</a> <a href="https://github.com/djugei/optimath">repository</a></p>
 <p>You can also join the discussion on <a href="https://www.reddit.com/r/rust/comments/eo4ury/">reddit</a>!</p>

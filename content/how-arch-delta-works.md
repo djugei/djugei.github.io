@@ -1,6 +1,7 @@
 +++
 title = "How arch-delta Saves 80+% Of Bandwith On Upgrades"
 date = 2025-01-20
+draft = true
 [taxonomies]
 tags = ["rust"]
 categories = ["arch-delta"]
@@ -170,14 +171,14 @@ This means either integrating tokio into the standard library
   or actually providing a set of Traits and types for interoperability and abstraction. 
 
 The debugging experience was also … not great.
-Backtraces are now horrible and contain 200 lines of tokio-related spam.
+(anyhow-)backtraces are now horrible and contain 200 lines of tokio-related spam.
 Luckily that's more of a nuisance since I did not have too many crashes overall.
 
 More importantly here is a memory leak I can not track down.
 After serving a few requests the server keeps using 500MB in idle.
 I am reasonably sure that no data structure I introduced grows unbounded.
 Though tools to find the (recursive) memory use of a struct are very lacking.
-I used heaptrack and similar,
+I used heaptrack and bytehound,
   but did not find useful information in their output.
 Libraries
   that instrument your code to provide a ```size_in_mem``` function

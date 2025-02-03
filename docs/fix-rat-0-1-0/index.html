@@ -10,8 +10,6 @@
       <title>Devblog of Djugei</title>
 
       
-        <link rel="alternate" type="application/rss+xml" title="RSS" href="https://djugei.github.io/rss.xml">
-      
 
       
           <link rel="stylesheet" href="https://djugei.github.io/site.css">
@@ -45,8 +43,6 @@
                                 <span itemprop="name">Tags
                                 </span></a>
                         
-                        
-                            <a href="https://djugei.github.io/rss.xml">(rss)</a>
                         
                         </nav>
                     </header>
@@ -93,20 +89,19 @@ especially around numbers with different exponents.</p>
 as it panics whenever it looses precision and does a huge amount of calculation to re-normalize itself
 (turning 2/10 into 1/5)
 even on mundane operations.
-This is required though to get proper equality operations and not continuously &quot;bloat&quot; the number(s).</p>
+This is required though to get proper equality operations and not continuously "bloat" the number(s).</p>
 <p>So I made <a href="https://crates.io/crates/fix-rat">fix-rat</a>.
 It utilizes const-generics to basically re-scale integers from i64::MIN..i64::MAX to whatever range you desire.</p>
-<pre style="background-color:#002b36;">
-<span style="color:#859900;">use </span><span style="color:#839496;">fix_rat::Rational;
-</span><span style="color:#268bd2;">type </span><span style="color:#839496;">R </span><span style="color:#859900;">= </span><span style="color:#839496;">Rational&lt;</span><span style="background-color:#6e2e32;color:#839496;">{</span><span style="color:#839496;"> </span><span style="color:#268bd2;">i64</span><span style="color:#839496;">::</span><span style="color:#cb4b16;">MAX </span><span style="color:#859900;">/ </span><span style="color:#6c71c4;">64</span><span style="color:#839496;">}</span><span style="color:#859900;">&gt;</span><span style="color:#839496;">;
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">use fix_rat::Rational;
+type R = Rational&lt;{ i64::MAX &#x2F; 64}&gt;;
 
-</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> a: R </span><span style="color:#859900;">= </span><span style="color:#6c71c4;">60.</span><span style="color:#859900;">into</span><span style="color:#839496;">();
-</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> b: R </span><span style="color:#859900;">= </span><span style="color:#6c71c4;">5.0</span><span style="color:#839496;">.</span><span style="color:#859900;">into</span><span style="color:#839496;">();
-</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> c </span><span style="color:#859900;">=</span><span style="color:#839496;"> a.</span><span style="color:#859900;">wrapping_add</span><span style="color:#839496;">(b);
+let a: R = 60.into();
+let b: R = 5.0.into();
+let c = a.wrapping_add(b);
 
-</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> c </span><span style="color:#859900;">=</span><span style="color:#839496;"> c.</span><span style="color:#859900;">to_i64</span><span style="color:#839496;">();
-assert_eq!(c, </span><span style="color:#859900;">-</span><span style="color:#6c71c4;">63</span><span style="color:#839496;">);
-</span></pre>
+let c = c.to_i64();
+assert_eq!(c, -63);
+</code></pre>
 <p>The code is not very complex, but someone had to write it :).
 The <a href="https://docs.rs/fix-rat/">documentation</a> contains some useful tips
 on how to handle numbers in multithreaded scenarios

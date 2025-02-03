@@ -10,8 +10,6 @@
       <title>Devblog of Djugei</title>
 
       
-        <link rel="alternate" type="application/rss+xml" title="RSS" href="https://djugei.github.io/rss.xml">
-      
 
       
           <link rel="stylesheet" href="https://djugei.github.io/site.css">
@@ -46,8 +44,6 @@
                                 </span></a>
                         
                         
-                            <a href="https://djugei.github.io/rss.xml">(rss)</a>
-                        
                         </nav>
                     </header>
                 
@@ -65,7 +61,7 @@
         <circle cx="16" cy="16" r="14"/>
         <path d="M16 8 L16 16 20 20"/>
     </svg>
-    <span>7 minute read</span>
+    <span>5 minute read</span>
     <svg style="margin-bottom: -3px" class="i-edit" viewBox="0 0 32 32"
          width="16" height="16" fill="none" stroke="currentcolor"
          stroke-linecap="round" stroke-linejoin="round" stroke-width="6.25%">
@@ -88,49 +84,45 @@ They do not.
 Instead they return a new pointer,
 which gets dropped silently if you don't use it.
 Unlike for example Result, which is must_use annotated.</p>
-<pre style="background-color:#002b36;">
-<span style="color:#586e75;">// wrong code:
-</span><span style="color:#268bd2;">let </span><span style="color:#859900;">mut</span><span style="color:#839496;"> buf </span><span style="color:#859900;">= </span><span style="color:#839496;">[</span><span style="color:#6c71c4;">1</span><span style="color:#839496;">, </span><span style="color:#6c71c4;">2</span><span style="color:#839496;">];
-</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> ptr </span><span style="color:#859900;">= &amp;mut</span><span style="color:#839496;"> buf[</span><span style="color:#6c71c4;">0</span><span style="color:#839496;">] </span><span style="color:#859900;">as *mut </span><span style="color:#268bd2;">u8</span><span style="color:#839496;">;
-</span><span style="color:#859900;">unsafe </span><span style="color:#839496;">{ ptr.</span><span style="color:#859900;">add</span><span style="color:#839496;">(</span><span style="color:#6c71c4;">1</span><span style="color:#839496;">) }
-</span><span style="color:#586e75;">// ptr still points to the first element, with no warnings
-</span></pre><pre style="background-color:#002b36;">
-<span style="color:#586e75;">// better code:
-</span><span style="color:#268bd2;">let </span><span style="color:#859900;">mut</span><span style="color:#839496;"> buf </span><span style="color:#859900;">= </span><span style="color:#839496;">[</span><span style="color:#6c71c4;">1</span><span style="color:#839496;">, </span><span style="color:#6c71c4;">2</span><span style="color:#839496;">];
-</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> ptr </span><span style="color:#859900;">= &amp;mut</span><span style="color:#839496;"> buf[</span><span style="color:#6c71c4;">0</span><span style="color:#839496;">] </span><span style="color:#859900;">as *mut </span><span style="color:#268bd2;">u8</span><span style="color:#839496;">;
-</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> ptr </span><span style="color:#859900;">= unsafe </span><span style="color:#839496;">{ ptr.</span><span style="color:#859900;">add</span><span style="color:#839496;">(</span><span style="color:#6c71c4;">1</span><span style="color:#839496;">) }
-</span></pre>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">&#x2F;&#x2F; wrong code:
+let mut buf = [1, 2];
+let ptr = &amp;mut buf[0] as *mut u8;
+unsafe { ptr.add(1) }
+&#x2F;&#x2F; ptr still points to the first element, with no warnings
+</code></pre>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">&#x2F;&#x2F; better code:
+let mut buf = [1, 2];
+let ptr = &amp;mut buf[0] as *mut u8;
+let ptr = unsafe { ptr.add(1) }
+</code></pre>
 <p>I caught that because I had tests and they failed.</p>
-<p>So turns out that &quot;better&quot; is not good enough!
+<p>So turns out that "better" is not good enough!
 The pointer points to the first <em>element</em>
 and while going one past the element is not UB,
 using it would be.
 We need a pointer to the whole array if we want to move around in it.</p>
-<pre style="background-color:#002b36;">
-<span style="color:#586e75;">// correct? code:
-</span><span style="color:#268bd2;">let </span><span style="color:#859900;">mut</span><span style="color:#839496;"> buf </span><span style="color:#859900;">= </span><span style="color:#839496;">[</span><span style="color:#6c71c4;">1</span><span style="color:#839496;">, </span><span style="color:#6c71c4;">2</span><span style="color:#839496;">];
-</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> ptr </span><span style="color:#859900;">=</span><span style="color:#839496;"> buf.</span><span style="color:#859900;">as_mut_ptr</span><span style="color:#839496;">();
-</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> ptr </span><span style="color:#859900;">= unsafe </span><span style="color:#839496;">{ ptr.</span><span style="color:#859900;">add</span><span style="color:#839496;">(</span><span style="color:#6c71c4;">1</span><span style="color:#839496;">) }
-</span></pre>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">&#x2F;&#x2F; correct? code:
+let mut buf = [1, 2];
+let ptr = buf.as_mut_ptr();
+let ptr = unsafe { ptr.add(1) }
+</code></pre>
 <p>Pointed out by <a href="https://www.reddit.com/r/rust/comments/gide2n/im_bad_at_unsafe/fqeg7vb/">CAD1997</a>.</p>
 <h2 id="alignment-issues">Alignment-issues</h2>
 <p>In the data structure I was building each chunk would have
 a fixed size/capacity and link to the next chunk.
 The basic data structure is, assuming 64 bit,  defined as:</p>
-<pre style="background-color:#002b36;">
-<span style="color:#859900;">pub </span><span style="color:#268bd2;">struct </span><span style="color:#839496;">Chunk&lt;T&gt; {
-    </span><span style="color:#268bd2;">buf</span><span style="color:#839496;">: [</span><span style="color:#268bd2;">u8</span><span style="color:#839496;">; 4096 - 2 - 8],
-    </span><span style="color:#268bd2;">len</span><span style="color:#839496;">: </span><span style="color:#268bd2;">u16</span><span style="color:#839496;">,
-    </span><span style="color:#268bd2;">next</span><span style="color:#839496;">: Option&lt;Box&lt;</span><span style="color:#268bd2;">Self</span><span style="color:#839496;">&gt;&gt;,
-    </span><span style="color:#268bd2;">phantom</span><span style="color:#839496;">: PhantomData&lt;T&gt;,
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">pub struct Chunk&lt;T&gt; {
+    buf: [u8; 4096 - 2 - 8],
+    len: u16,
+    next: Option&lt;Box&lt;Self&gt;&gt;,
+    phantom: PhantomData&lt;T&gt;,
 }
-</span></pre>
+</code></pre>
 <p>For initialization I wanted to just pass in a page of memory and write to it</p>
-<pre style="background-color:#002b36;">
-<span style="color:#268bd2;">fn </span><span style="color:#b58900;">new</span><span style="color:#839496;">&lt;T&gt;(</span><span style="color:#268bd2;">base</span><span style="color:#839496;">: [</span><span style="color:#268bd2;">u8</span><span style="color:#839496;">; 4096]) -&gt; Chunk&lt;T&gt; {
-	</span><span style="color:#586e75;">// ...
-</span><span style="color:#839496;">}
-</span></pre>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">fn new&lt;T&gt;(base: [u8; 4096]) -&gt; Chunk&lt;T&gt; {
+	&#x2F;&#x2F; ...
+}
+</code></pre>
 <p>Simple right?
 Well not so fast.</p>
 <p>An array of u8 has an alignment of 1, meaning it can start on any byte of memory.
@@ -138,11 +130,10 @@ But the chunk's len field has an alignment of 2, can only start on even bytes.
 The next field even has an alignment of 8.
 I solved that my requiring the user to pass in an uninitialized chunk that - by definition -
 fits the required alignment:</p>
-<pre style="background-color:#002b36;">
-<span style="color:#268bd2;">fn </span><span style="color:#b58900;">new</span><span style="color:#839496;">&lt;T&gt;(</span><span style="color:#268bd2;">base</span><span style="color:#839496;">: MaybeUninit&lt;Chunk&lt;T&gt;&gt;) -&gt; Chunk&lt;T&gt; {
-	</span><span style="color:#586e75;">// ...
-</span><span style="color:#839496;">}
-</span></pre>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">fn new&lt;T&gt;(base: MaybeUninit&lt;Chunk&lt;T&gt;&gt;) -&gt; Chunk&lt;T&gt; {
+	&#x2F;&#x2F; ...
+}
+</code></pre>
 <p>I caught this using miri.
 The new function signature makes getting a Chunk a bit more annoying for the user.
 But at least its safe now.</p>
@@ -150,10 +141,9 @@ But at least its safe now.</p>
 <p>Well no. Right now Chunk has an alignment of 8.
 What if we want to store something with a bigger alignment?
 Segfaults, thats what.</p>
-<pre style="background-color:#002b36;">
-<span style="color:#839496;">#[</span><span style="color:#268bd2;">repr</span><span style="color:#839496;">(C, </span><span style="color:#268bd2;">align</span><span style="color:#839496;">(4096))]
-</span><span style="color:#859900;">pub </span><span style="color:#268bd2;">struct </span><span style="color:#839496;">Chunk&lt;T&gt; { }
-</span></pre>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">#[repr(C, align(4096))]
+pub struct Chunk&lt;T&gt; { }
+</code></pre>
 <p>Now its force-aligned to a full page.</p>
 <p>This one I actually caught on my own due to thinking about the previous alignment error.</p>
 <p>But wait, there is more!
@@ -161,15 +151,14 @@ We also need to consider the case of T being bigger than the buffer,
 or having an alignment even larger than a whole page.
 Sadly at the moment its not very viable to check this at compile-time,
 so runtime-checks will have to do.</p>
-<pre style="background-color:#002b36;">
-<span style="color:#268bd2;">fn </span><span style="color:#b58900;">new</span><span style="color:#839496;">&lt;T&gt;(</span><span style="color:#268bd2;">base</span><span style="color:#839496;">: MaybeUninit&lt;Chunk&lt;T&gt;&gt;) -&gt; Chunk&lt;T&gt; {
-        assert!(std::mem::size_of::&lt;T&gt;() </span><span style="color:#859900;">&lt;= </span><span style="color:#cb4b16;">BUF_SIZE</span><span style="color:#839496;">);
-        assert!(std::mem::align_of::&lt;T&gt;() </span><span style="color:#859900;">&lt;= </span><span style="color:#6c71c4;">4096</span><span style="color:#839496;">);
-	</span><span style="color:#586e75;">// ...
-</span><span style="color:#839496;">}
-</span></pre>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">fn new&lt;T&gt;(base: MaybeUninit&lt;Chunk&lt;T&gt;&gt;) -&gt; Chunk&lt;T&gt; {
+        assert!(std::mem::size_of::&lt;T&gt;() &lt;= BUF_SIZE);
+        assert!(std::mem::align_of::&lt;T&gt;() &lt;= 4096);
+	&#x2F;&#x2F; ...
+}
+</code></pre>
 <p>Now we are good. I hope.</p>
-<h2 id="off-by-one">Off-By-&quot;One&quot;</h2>
+<h2 id="off-by-one">Off-By-"One"</h2>
 <p>In the wonderful world of safe rust, everything is done with iterators
 and actually indexing anything is a rare sight.
 In fact I have come to basically never use manual indexing or offsets in my code.
@@ -177,26 +166,24 @@ A bit like a mathematician, seeing actual numbers just feels wrong.</p>
 <p>In unsafe rust you will need to manually count with pointers.</p>
 <h3 id="pointer-casts">Pointer Casts</h3>
 <p>The first mistake I made was actually in safe code, producing a value I then wanted to use in an unsafe block:</p>
-<pre style="background-color:#002b36;">
-<span style="color:#268bd2;">fn </span><span style="color:#b58900;">new</span><span style="color:#839496;">&lt;T&gt;(</span><span style="color:#268bd2;">base</span><span style="color:#839496;">: MaybeUninit&lt;Chunk&lt;T&gt;&gt;) -&gt; Chunk&lt;T&gt; {
-        assert!(std::mem::size_of::&lt;T&gt;() </span><span style="color:#859900;">&lt;= </span><span style="color:#cb4b16;">BUF_SIZE</span><span style="color:#839496;">);
-        assert!(std::mem::align_of::&lt;T&gt;() </span><span style="color:#859900;">&lt;= </span><span style="color:#6c71c4;">4096</span><span style="color:#839496;">);
-	</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> base_ptr </span><span style="color:#859900;">=</span><span style="color:#839496;"> base.</span><span style="color:#859900;">as_mut_ptr</span><span style="color:#839496;">();
-	</span><span style="color:#586e75;">// skip to len field:
-	</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> len_ptr </span><span style="color:#859900;">= unsafe </span><span style="color:#839496;">{ base.</span><span style="color:#859900;">add</span><span style="color:#839496;">(</span><span style="color:#6c71c4;">4096 </span><span style="color:#859900;">- </span><span style="color:#6c71c4;">2 </span><span style="color:#859900;">- </span><span style="color:#6c71c4;">8</span><span style="color:#839496;">) };
-	</span><span style="color:#586e75;">// ...
-</span><span style="color:#839496;">}
-</span></pre>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">fn new&lt;T&gt;(base: MaybeUninit&lt;Chunk&lt;T&gt;&gt;) -&gt; Chunk&lt;T&gt; {
+        assert!(std::mem::size_of::&lt;T&gt;() &lt;= BUF_SIZE);
+        assert!(std::mem::align_of::&lt;T&gt;() &lt;= 4096);
+	let base_ptr = base.as_mut_ptr();
+	&#x2F;&#x2F; skip to len field:
+	let len_ptr = unsafe { base.add(4096 - 2 - 8) };
+	&#x2F;&#x2F; ...
+}
+</code></pre>
 <p>base_ptr is of type *mut MaybeUninit&lt;Chunk<T>&gt;, so I was skipping a few thousand whole chunks,
 landing very deep in uninitialized memory.</p>
-<pre style="background-color:#002b36;">
-<span style="color:#839496;">	</span><span style="color:#586e75;">// fixed:
-        </span><span style="color:#268bd2;">let</span><span style="color:#839496;"> store_ptr </span><span style="color:#859900;">=</span><span style="color:#839496;"> store.</span><span style="color:#859900;">as_mut_ptr</span><span style="color:#839496;">() </span><span style="color:#859900;">as *mut </span><span style="color:#839496;">MaybeUninit&lt;</span><span style="color:#268bd2;">u8</span><span style="color:#839496;">&gt;;
-</span></pre>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">	&#x2F;&#x2F; fixed:
+        let store_ptr = store.as_mut_ptr() as *mut MaybeUninit&lt;u8&gt;;
+</code></pre>
 <p>This is also a bit of a lesson about the scope of unsafe: while the unsafe block itself might be short
 everything that touches things that are also relied on in an unsafe context is also very relevant.
 In fact The whole module should probably be considered unsafe, because private values are accessible.
-For example changing the Chunks length field would lead to undefined behaviour, even though its a &quot;safe&quot; operation.</p>
+For example changing the Chunks length field would lead to undefined behaviour, even though its a "safe" operation.</p>
 <h3 id="lengths">Lengths</h3>
 <p>Now that I had the ability to create a new Chunk,
 I wanted to actually do something with it.
@@ -205,41 +192,38 @@ Like for example inserting and removing elements.</p>
 a remove is a swap followed by a memcopy.</p>
 <p>the swap/write are quite straightforward,
 but I made some mistakes with the memcopy:</p>
-<pre style="background-color:#002b36;">
-<span style="color:#268bd2;">fn </span><span style="color:#b58900;">insert</span><span style="color:#839496;">(</span><span style="color:#859900;">&amp;mut </span><span style="color:#268bd2;">self</span><span style="color:#839496;">, </span><span style="color:#268bd2;">index</span><span style="color:#839496;">: </span><span style="color:#268bd2;">usize</span><span style="color:#839496;">, </span><span style="color:#268bd2;">element</span><span style="color:#839496;">: T) -&gt; Option&lt;T&gt; {
-	</span><span style="color:#586e75;">// ...
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">fn insert(&amp;mut self, index: usize, element: T) -&gt; Option&lt;T&gt; {
+	&#x2F;&#x2F; ...
 
-	</span><span style="color:#268bd2;">let </span><span style="color:#839496;">(_pre, values, _post) </span><span style="color:#859900;">= unsafe </span><span style="color:#839496;">{ </span><span style="color:#268bd2;">self</span><span style="color:#839496;">.buf.</span><span style="color:#859900;">align_to</span><span style="color:#839496;">() };
-	</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> copy_source_index </span><span style="color:#859900;">= &amp;mut</span><span style="color:#839496;"> values[index] </span><span style="color:#859900;">as *mut </span><span style="color:#839496;">MaybeUninit&lt;T&gt;;
-	</span><span style="color:#586e75;">// pointers are allowed to overshoot an allocation by one,
-	// so this is fine.
-	</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> copy_target </span><span style="color:#859900;">= unsafe </span><span style="color:#839496;">{ copy_source.</span><span style="color:#859900;">add</span><span style="color:#839496;">(</span><span style="color:#6c71c4;">1</span><span style="color:#839496;">) };
+	let (_pre, values, _post) = unsafe { self.buf.align_to() };
+	let copy_source_index = &amp;mut values[index] as *mut MaybeUninit&lt;T&gt;;
+	&#x2F;&#x2F; pointers are allowed to overshoot an allocation by one,
+	&#x2F;&#x2F; so this is fine.
+	let copy_target = unsafe { copy_source.add(1) };
 
-    	</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> remainder </span><span style="color:#859900;">= </span><span style="color:#268bd2;">self</span><span style="color:#839496;">.len </span><span style="color:#859900;">-</span><span style="color:#839496;"> index;
+    	let remainder = self.len - index;
 	
-	</span><span style="color:#859900;">unsafe </span><span style="color:#839496;">{ std::ptr::copy(copy_source, copy_target, len) };
-	</span><span style="color:#586e75;">// ...
-</span><span style="color:#839496;">}
-</span></pre>
+	unsafe { std::ptr::copy(copy_source, copy_target, len) };
+	&#x2F;&#x2F; ...
+}
+</code></pre>
 <p>This is an acceptable implementation of insert (with important sanity checks removed for brevity).
 Now lets do remove! Basically the same as insert, but with source and target swapped.</p>
-<pre style="background-color:#002b36;">
-<span style="color:#268bd2;">fn </span><span style="color:#b58900;">remove</span><span style="color:#839496;">(</span><span style="color:#859900;">&amp;mut </span><span style="color:#268bd2;">self</span><span style="color:#839496;">, </span><span style="color:#268bd2;">index</span><span style="color:#839496;">: </span><span style="color:#268bd2;">usize</span><span style="color:#839496;">) -&gt; Option&lt;T&gt; {
-	</span><span style="color:#586e75;">// ...
-	</span><span style="color:#268bd2;">let </span><span style="color:#839496;">(_pre, values, _post) </span><span style="color:#859900;">= unsafe </span><span style="color:#839496;">{ </span><span style="color:#268bd2;">self</span><span style="color:#839496;">.buf.</span><span style="color:#859900;">align_to</span><span style="color:#839496;">() };
-	</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> copy_target </span><span style="color:#859900;">= &amp;mut</span><span style="color:#839496;"> values[index] </span><span style="color:#859900;">as *mut </span><span style="color:#839496;">MaybeUninit&lt;T&gt;;
-	</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> copy_source </span><span style="color:#859900;">= unsafe </span><span style="color:#839496;">{ copy_target.</span><span style="color:#859900;">add</span><span style="color:#839496;">(</span><span style="color:#6c71c4;">1</span><span style="color:#839496;">) };
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">fn remove(&amp;mut self, index: usize) -&gt; Option&lt;T&gt; {
+	&#x2F;&#x2F; ...
+	let (_pre, values, _post) = unsafe { self.buf.align_to() };
+	let copy_target = &amp;mut values[index] as *mut MaybeUninit&lt;T&gt;;
+	let copy_source = unsafe { copy_target.add(1) };
 
-	</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> remainder </span><span style="color:#859900;">= </span><span style="color:#268bd2;">self</span><span style="color:#839496;">.len </span><span style="color:#859900;">-</span><span style="color:#839496;"> index;
+	let remainder = self.len - index;
 
-	</span><span style="color:#859900;">unsafe </span><span style="color:#839496;">{ std::ptr::copy(copy_source, copy_target, remainder) };
-	</span><span style="color:#586e75;">// ...
-</span><span style="color:#839496;">}
-</span></pre>
+	unsafe { std::ptr::copy(copy_source, copy_target, remainder) };
+	&#x2F;&#x2F; ...
+}
+</code></pre>
 <p>Except that's wrong.</p>
-<pre style="background-color:#002b36;">
-<span style="color:#839496;">	</span><span style="color:#268bd2;">let</span><span style="color:#839496;"> remainder </span><span style="color:#859900;">= </span><span style="color:#268bd2;">self</span><span style="color:#839496;">.len </span><span style="color:#859900;">- </span><span style="color:#839496;">(index </span><span style="color:#859900;">+ </span><span style="color:#6c71c4;">1</span><span style="color:#839496;">);
-</span></pre>
+<pre data-lang="rust" class="language-rust "><code class="language-rust" data-lang="rust">	let remainder = self.len - (index + 1);
+</code></pre>
 <p>is correct because the value at index has just been removed, that was the whole point!</p>
 <p>Found this one with miri.</p>
 <h2 id="dealing-with-unsafe">Dealing with unsafe</h2>
@@ -264,10 +248,9 @@ Make sure to cover edge-cases,
 in my example that would be inserting/removing at the last position.</p>
 <h3 id="miri">Miri</h3>
 <p>Use miri! Its really useful and easy to get started with.</p>
-<pre style="background-color:#002b36;">
-<span style="color:#268bd2;">$</span><span style="color:#839496;"> rustup component add miri
-</span><span style="color:#268bd2;">$</span><span style="color:#839496;"> cargo miri test
-</span></pre>
+<pre data-lang="bash" class="language-bash "><code class="language-bash" data-lang="bash">$ rustup component add miri
+$ cargo miri test
+</code></pre>
 <p>miri can't test code it does not see,
 so make sure your tests actually run the important parts.</p>
 <p>Also it won't catch every problem in the code it does see, not a replacement for thinking!</p>

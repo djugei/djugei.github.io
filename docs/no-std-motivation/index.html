@@ -10,8 +10,6 @@
       <title>Devblog of Djugei</title>
 
       
-        <link rel="alternate" type="application/rss+xml" title="RSS" href="https://djugei.github.io/rss.xml">
-      
 
       
           <link rel="stylesheet" href="https://djugei.github.io/site.css">
@@ -45,8 +43,6 @@
                                 <span itemprop="name">Tags
                                 </span></a>
                         
-                        
-                            <a href="https://djugei.github.io/rss.xml">(rss)</a>
                         
                         </nav>
                     </header>
@@ -90,7 +86,7 @@ If im not mistaken Rust without allocations is not <a href="https://en.wikipedia
 A language that is Turing complete is to some degree equivalent to a Turing machine,
 i.e. can be transformed into one without gaining or loosing functionality.
 Most programming languages, including Rust, are Turing complete.</p>
-<p>Computer science can also reason about &quot;über Turing machines&quot; that can solve problems even Turing machines can't solve,
+<p>Computer science can also reason about "über Turing machines" that can solve problems even Turing machines can't solve,
 but we have no idea how to build one of those even in theory.</p>
 <p>While being most powerful, Turing complete languages also have some drawbacks.
 They are harder to reason about than their lesser peers.
@@ -113,7 +109,7 @@ Well for one no programming language is actually like <em>really</em> <em>really
 A dual stack (and even a single stack!) automaton requires two (one) unbounded stacks.</p>
 <p>Unbounded as in as large as the problem needs it to be. Real computers have limited hard disk space though, so they fail that
 requirement for big problems. And in practice fail it even for much smaller problems cause no one wants to use Disk as Memory.</p>
-<p>In the same way you could have a second, bounded, stack be an element in your single stack and therefore have &quot;two&quot; stacks.
+<p>In the same way you could have a second, bounded, stack be an element in your single stack and therefore have "two" stacks.
 But at this point you are basically building an allocator anyway :).</p>
 <p>Also no_std and alloc free Rust still allow for infinite loops and recursions. That's true but basically never a good idea.
 Since you only have one stack, that at any point has a known number of elements it basically never makes sense to iterate over
