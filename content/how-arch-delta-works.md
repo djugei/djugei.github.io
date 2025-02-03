@@ -49,6 +49,17 @@ mainly to provide user-friendly progress indicators while working on multiple pa
 Rust alleviates at least some of the common security concerns.
 Additionally the Arch Linux project does not have to shoulder any additional complexity.
 
+### Alternatives
+Pre-generating the most common and most compressible packages and communicating them to the client as a whitelist
+  would allow a somewhat simpler design.
+The client gets called for each dependency (XferCommand)
+  and either does the delta download or gets the package from the mirror.
+This would potentially loose a lot of the long tail.
+While ~50% of the size savings are found in the top 10 packages,
+  it required generating a lot of deltas to _find_ those top 10 packages.
+
+A solution to that may be a hybrid approach where the server supports both styles and the user can choose.
+
 ## Server
 The server has to:
   * Accept a request for a delta from an old to a new version
@@ -227,11 +238,31 @@ I was unable to call the zstd library in the correct way,
   so I spawn process of the zstd command line tool.
 Thankfully that provides reproducible results.
 
+### Bit-exact reproduction
+Compression requires the exact same version of zstd and the exact same parameters.
+Since I deem juggling multiple versions of zstd to be out of scope
+  this results in some unpleasantness around zstd upgrades.
+This is made somewhat worse by arch "stable" packages sometimes being built within a "testing" environment.
+Additionally packages can in theory alter the zstd compression parameters,
+  though to my knowledge only one package does.
+Ironically that is [the rust package](https://gitlab.archlinux.org/archlinux/packaging/packages/rust/-/issues/4),
+  for a net size save of 647 bytes.
+
+A solution for this is to have signatures on the uncompressed packages.
+arch-delta is specifically designed not to be trusted,
+  so rolling my own signing infrastructure is not in the cards.
+I hope to be able to convince the arch developers to provide uncompressed signatures
+  in addition to the compressed ones,
+  once this approach is shown to be useful.
+This also has the advantage of skipping the recompression step which is generally pointless,
+  as the packages get instantly installed anyways.
+
+### Signatures
 While Pacman automatically downloads missing signatures, it does so in a sequential manner,
   which takes a noticeable amount of time due to all the roundtrips involved.
 As async makes this quite simple we also download all signature files concurrently.
 
-#### UI
+### UI
 Since a package can be in one of 4 states (waiting, downloading, patching/compressing, error)
   and a lot of packages are processed concurrently
   and the entire process takes quite a bit of time,
@@ -252,7 +283,7 @@ People generally want to know
 1. Whats happening
 2. How long its gonna take
 3. Why something happened,
-  especially if something goes wrong
+   especially if something goes wrong
 4. If something was worth it
 
 Progress bars are a great tool for 1.) and 2.),
@@ -288,6 +319,9 @@ To explain why something happens I write a long message a non-default path is ta
 This is generally either the package being on the blacklist due to know bad delta compression performance,
   or no previous package of that name being available in the package cache,
     usually because of package renames or ```pacman -Scc```.
+
+\* the efficiency described in the opening paragraph is with linux-image blacklisted,
+  due to low gains (about 20% saved) and long calculation.
 
 To give efficacy feedback the tool outputs bandwidth saved in the end of each run,
   and provides a "stats" subcommand that calculates statistics by scanning the package cache.
