@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+      <title>Devblog of Djugei - no_std</title>
+      <link>https://djugei.github.io</link>
+      <description>Some fun ideas and insights, mainly around rust</description>
+      <generator>Zola</generator>
+      <language>en</language>
+      <atom:link href="https://djugei.github.io/tags/no-std/rss.xml" rel="self" type="application/rss+xml"/>
+      <lastBuildDate>Fri, 10 Jan 2020 00:00:00 +0000</lastBuildDate>
+      <item>
+          <title>Why I like programming for #![no_std] in Rust (even without embedded)</title>
+          <pubDate>Fri, 10 Jan 2020 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://djugei.github.io/no-std-motivation/</link>
+          <guid>https://djugei.github.io/no-std-motivation/</guid>
+          <description xml:base="https://djugei.github.io/no-std-motivation/">&lt;p&gt;I noticed that I quite enjoy writing libraries that support no_std environments,
+even though I myself don&#x27;t even work on embedded.&lt;&#x2F;p&gt;
+</description>
+      </item>
+    </channel>
+</rss>

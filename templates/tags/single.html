@@ -1,11 +1,13 @@
 {% extends "index.html" %}
 
-{% block content %}
-    {% block header %}
-        {{ super() }}
-    {% endblock header %}
 
-    <h1>{{ term.name }} <a href="{{ current_url }}rss.xml">(rss)</a> </h1>
+{% block content %}
+{% block extra_head %}
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="{{ current_url | safe}}rss.xml">
+    <link rel="alternate" type="application/atom+xml" title="Atom" href="{{ current_url | safe}}atom.xml">
+{% endblock extra_head %}
+
+<h1>{{ term.name }} <a href="{{ current_url | safe }}rss.xml">(rss)</a> </h1>
 
     {% for page in term.pages %}
         {{ post_macros::page_in_list(page=page) }}

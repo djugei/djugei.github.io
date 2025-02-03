@@ -12,11 +12,12 @@
       <title>{% block title %}{{ config.title }}{% endblock title %}</title>
 
       {% if config.generate_rss %}
-        <link rel="alternate" type="application/rss+xml" title="RSS" href="{{ get_url(path="rss.xml") | safe }}">
+          <link rel="alternate" type="application/rss+xml" title="RSS" href="{{ get_url(path="rss.xml", trailing_slash=false) }}">
+          <link rel="alternate" type="application/atom+xml" title="Atom" href="{{ get_url(path="atom.xml", trailing_slash=false) }}">
       {% endif %}
 
       {% block css %}
-          <link rel="stylesheet" href="{{ get_url(path="site.css", trailing_slash=false) | safe }}">
+        <link rel="stylesheet" href="{{ get_url(path="site.css", trailing_slash=false) }}">
       {% endblock css %}
 
       {% block extra_head %}

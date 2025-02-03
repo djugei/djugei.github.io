@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+      <title>Devblog of Djugei - fix-rat</title>
+      <link>https://djugei.github.io</link>
+      <description>Some fun ideas and insights, mainly around rust</description>
+      <generator>Zola</generator>
+      <language>en</language>
+      <atom:link href="https://djugei.github.io/categories/fix-rat/rss.xml" rel="self" type="application/rss+xml"/>
+      <lastBuildDate>Sat, 23 Jan 2021 00:00:00 +0000</lastBuildDate>
+      <item>
+          <title>fix-rat published</title>
+          <pubDate>Sat, 23 Jan 2021 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://djugei.github.io/fix-rat-0-1-0/</link>
+          <guid>https://djugei.github.io/fix-rat-0-1-0/</guid>
+          <description xml:base="https://djugei.github.io/fix-rat-0-1-0/">&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;crates.io&#x2F;crates&#x2F;fix-rat&quot;&gt;Fix-rat&lt;&#x2F;a&gt; is a rational number with a denominator chosen at compile time.&lt;&#x2F;p&gt;
+</description>
+      </item>
+    </channel>
+</rss>

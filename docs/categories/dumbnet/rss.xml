@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+      <title>Devblog of Djugei - dumbnet</title>
+      <link>https://djugei.github.io</link>
+      <description>Some fun ideas and insights, mainly around rust</description>
+      <generator>Zola</generator>
+      <language>en</language>
+      <atom:link href="https://djugei.github.io/categories/dumbnet/rss.xml" rel="self" type="application/rss+xml"/>
+      <lastBuildDate>Thu, 26 Dec 2019 00:00:00 +0000</lastBuildDate>
+      <item>
+          <title>Dumbnet version 0.1.0 released</title>
+          <pubDate>Thu, 26 Dec 2019 00:00:00 +0000</pubDate>
+          <author>Unknown</author>
+          <link>https://djugei.github.io/dumbnet-0-1-0/</link>
+          <guid>https://djugei.github.io/dumbnet-0-1-0/</guid>
+          <description xml:base="https://djugei.github.io/dumbnet-0-1-0/">&lt;p&gt;Mostly for fun I developed a small artificial neural network library that does all its work on the stack, no operating system or allocator needed.&lt;&#x2F;p&gt;
+</description>
+      </item>
+    </channel>
+</rss>

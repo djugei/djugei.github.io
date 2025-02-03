@@ -1,10 +1,6 @@
 {% extends "index.html" %}
 
 {% block content %}
-    {% block header %}
-        {{ super() }}
-    {% endblock header %}
-
     <h1>Tags</h1>
 
     {% if terms %}
@@ -12,7 +8,7 @@
             {% for term in terms %}
                 <li>
 			<a href="{{ term.permalink | safe }}">{{ term.name }}</a> ({{ term.pages | length }})
-			<a href="{{ term.permalink | safe }}/rss.xml">(rss)</a>
+			<a href="{{ term.permalink | safe }}rss.xml">(rss)</a>
 		</li>
             {% endfor %}
         </ul>
