@@ -16,6 +16,7 @@ Read the [sister post](../arch-delta-released) if you want to know what this is 
 I will give an overview of the project.
 If people are interested I might do deeper dives into some aspects in later posts.
 
+
 ## History/Timeline
 Arch Linux's package manager pacman used to have a built-in delta upgrade.
 This was discontinued around 2019 due to
@@ -30,6 +31,7 @@ It was based on the xdelta3 tool/algorithm.
 I was an avid user of that feature, due to my very slow internet connection.
 So in 2023 I started working on a replacement.
 I have been using it for more than a year now and it feels ready for release.
+
 
 ## Design
 I decided on a slightly different approach for my project.
@@ -59,6 +61,7 @@ While ~50% of the size savings are found in the top 10 packages,
   it required generating a lot of deltas to _find_ those top 10 packages.
 
 A solution to that may be a hybrid approach where the server supports both styles and the user can choose.
+
 
 ## Server
 The server has to:
@@ -140,7 +143,6 @@ I used Hashbrown as my HashMap implementation of choice.
 To save on a copy bound on the Key I have slightly [extended their entry API](https://github.com/rust-lang/hashbrown/pull/579),
   allowing users to provide the owned Key at insertion instead of at query time.
 
-
 #### API
 ```Cacheable``` types hold the State,
   if any is needed,
@@ -204,6 +206,7 @@ Overall I will probably re-engineer the server to use some purely threaded solut
 That also means rewriting the cache,
   though the logic stays the same,
   so I am hoping that just removing the async/await keywords will do the trick.
+
 
 ## Client
 The client has to:
@@ -325,6 +328,7 @@ This is generally either the package being on the blacklist due to know bad delt
 
 To give efficacy feedback the tool outputs bandwidth saved in the end of each run,
   and provides a "stats" subcommand that calculates statistics by scanning the package cache.
+
 
 ## Database Deltas
 Part of the bandwidth for updates is used to find which updates are available ```pacman -Sy```.
