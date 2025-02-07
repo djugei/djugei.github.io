@@ -229,6 +229,8 @@ Since you can not implement foreign traits on foreign types,
 An impossible task.
 I assume that the issue is somewhere in the framework or the runtime.
 No idea where and how to debug this though.
+Utilizing jemalloc has slowed the leak down considerably,
+  it might therefore be a memory fragmentation issue.
 
 Overall I will probably re-engineer the server to use some purely threaded solution.
 That also means rewriting the cache,
