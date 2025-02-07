@@ -63,6 +63,34 @@ While ~50% of the size savings are found in the top 10 packages,
 A solution to that may be a hybrid approach where the server supports both styles and the user can choose.
 
 
+## Development tricks
+Before getting into the details,
+  let me share some things that helped get this project done.
+
+### Small todo notes.
+If you check the ```.gitignore``` you may find that files called todo are excluded.
+Whenever I did not have time or motivation and noticed
+  a feature needs to be done,
+  nontrivial bug needs to be fixed,
+  or design needs to be changed,
+I put it in there.
+Then either noticed that some part of the todo could be done right away,
+  or I would simply pick up a task the next time I came back.
+Small bugs or things related to only a specific section on the code I put into ```rust //TODO:``` or ```rust //FIXME:```comments.
+No need to be consistent,
+  just do what helps.
+
+### Just fork it
+Sometimes your dependencies don't quite work the way you like them to,
+  or they may be lacking a feature.
+I have pretty aggressively forked the dependencies,
+  implemented the change
+  and switched to relying on my own repository.
+I have then generally opened a PR in the upstream repository.
+
+This way you don't get blocked and the upstream project potentially gains a feature.
+
+
 ## Server
 The server has to:
   * Accept a request for a delta from an old to a new version
