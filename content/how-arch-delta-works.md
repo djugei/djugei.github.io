@@ -324,7 +324,11 @@ This is generally either the package being on the blacklist due to know bad delt
     usually because of package renames or ```pacman -Scc```.
 
 \* the efficiency described in the opening paragraph is with linux-image blacklisted,
-  due to low gains (about 20% saved) and long calculation.
+  due to very low gains and long calculation.
+  It also only covers hits,
+    ignoring uncaught renames,
+    newly introduced dependencies,
+    and the user simply not having the previous version in cache.
 
 To give efficacy feedback the tool outputs bandwidth saved in the end of each run,
   and provides a "stats" subcommand that calculates statistics by scanning the package cache.
