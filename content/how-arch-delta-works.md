@@ -1,5 +1,5 @@
 +++
-title = "How arch-delta Saves 80+% Of Bandwith On Upgrades"
+title = "How arch-delta Saves 80+% Of Bandwidth On Upgrades"
 date = 2025-01-20
 draft = true
 [taxonomies]
@@ -130,7 +130,7 @@ The current tactic is to just hope enough memory is available and hit swap in th
 Since decompressed packages are highly compressible,
    tools like zswap and zram can be viable mitigations.
 
-Delta generating is spawned as an independent task with a backchannel,
+Delta generating is spawned as an independent task with a back-channel,
   to avoid wasting work when a request times out.
 
 ### Cache
@@ -154,7 +154,7 @@ The basic flow is:
   6. Finish generating, send message, remove the entry
 
 If in step 2 the Entry exists,
-  we simply wait for a message on the chanel and read the file afterwards.
+  we simply wait for a message on the channel and read the file afterwards.
 
 Generating the File might fail.
 In that case the generating task simply fails,
@@ -172,12 +172,12 @@ To save on a copy bound on the Key I have slightly [extended their entry API](ht
   allowing users to provide the owned Key at insertion instead of at query time.
 
 #### API
-```Cacheable``` types hold the State,
+```CacheState``` types hold the State,
   if any is needed,
-  for example a handle to a http-client,
+  for example a handle to a HTTP-client,
   or a name/path to differentiate instances.
 They need to provide two functions,
-  one that turns a cache key into a filesystem path,
+  one that turns a cache key into a file-system path,
   and one that generates the File.
 
 In the first iteration those were provided as loose functions to the ```FileCache```.
@@ -203,10 +203,10 @@ For one,
   I end up spawning threads anyways.
 
 Choosing async in practice means choosing tokio
-  because the rust stdlib does not provide sufficient async functionality out of the box,
+  because the rust std-lib does not provide sufficient async functionality out of the box,
   leading library implementer towards writing runtime-specific code.
 The cache I implemented for this project now depends on tokio,
-  as I needed to spawn a blocking task and use an async-aware mutex.
+  as I needed to spawn a blocking task and use an async-aware Mutex.
 If rust is serious about async support it needs to have good defaults.
 This means either integrating tokio into the standard library
   or actually providing a set of Traits and types for interoperability and abstraction. 
@@ -353,7 +353,7 @@ This is generally either the package being on the blacklist due to know bad delt
   or no previous package of that name being available in the package cache,
     usually because of package renames or ```pacman -Scc```.
 
-\* the efficiency described in the opening paragraph is with linux-image blacklisted,
+\* the efficiency described in the opening paragraph is with the Linux kernel blacklisted,
   due to very low gains and long calculation.
   It also only covers hits,
     ignoring uncaught renames,
@@ -361,7 +361,7 @@ This is generally either the package being on the blacklist due to know bad delt
     and the user simply not having the previous version in cache.
 
 To give efficacy feedback the tool outputs bandwidth saved in the end of each run,
-  and provides a "stats" subcommand that calculates statistics by scanning the package cache.
+  and provides a "stats" sub-command that calculates statistics by scanning the package cache.
 
 
 ## Database Deltas
