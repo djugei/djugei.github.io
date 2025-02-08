@@ -308,7 +308,7 @@ I chose to show progress for currently running tasks,
 This is implemented using [indicatif](https://lib.rs/crates/indicatif) for the progress bars
   and the [log](https://lib.rs/crates/log) crate with [env_logger](https://lib.rs/crates/env_logger) for the log.
 Since those two sometimes fight for the terminal,
-  I created [indicatif-log-bridge](lib.rs/crates/indicatif-log-bridge),
+  I created [indicatif-log-bridge](https://lib.rs/crates/indicatif-log-bridge),
     a surprisingly popular crate,
   that makes them play nice.
 
