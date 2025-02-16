@@ -1,6 +1,6 @@
 +++
 title = "How arch-delta Saves 80+% Of Bandwidth On Upgrades"
-date = 2025-01-20
+date = 2025-02-16
 draft = true
 [taxonomies]
 tags = ["rust"]
@@ -8,7 +8,7 @@ categories = ["arch-delta"]
 +++
 
 [arch-delta](https://github.com/djugei/arch-delta-upgrades/) upgrades arch installations
-using ~83.75%* less bandwidth by only downloading the difference between package versions.
+using ~83.97%* less bandwidth by only downloading the difference between package versions.
 
 <!-- more --> 
 This post is more of a technical overview, for people interested in programming and rust.
@@ -249,7 +249,9 @@ The client has to:
 * Re-compress packages to provide bit-identical versions for signatures
 * And show a responsive, informative user interface.
 
-The client also uses async, though somehow it felt way better than on the server.
+The client also uses async.
+Though I did hit a wall when trying to create a composable retry-function,
+  somehow it felt way better than on the server.
 Most steps are quite straightforward.
 Semaphores are used to limit the degree of parallelism to not overload the client or server.
 
@@ -277,8 +279,8 @@ Since I deem juggling multiple versions of zstd to be out of scope
   this results in some unpleasantness around zstd upgrades.
 This is made somewhat worse by arch "stable" packages sometimes being built within a "testing" environment.
 Additionally packages can in theory alter the zstd compression parameters,
-  though to my knowledge only one package does.
-Ironically that is [the rust package](https://gitlab.archlinux.org/archlinux/packaging/packages/rust/-/issues/4),
+  though to my knowledge only two packages do.
+Ironically that includes [the rust package](https://gitlab.archlinux.org/archlinux/packaging/packages/rust/-/issues/4),
   for a net size save of 647 bytes.
 
 A solution for this is to have signatures on the uncompressed packages.
