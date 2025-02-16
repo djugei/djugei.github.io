@@ -23,8 +23,7 @@
         <link rel="alternate" type="text/html" href="https://djugei.github.io/dumbnet-0-1-0/"/>
         <id>https://djugei.github.io/dumbnet-0-1-0/</id>
         
-        <summary type="html">&lt;p&gt;Mostly for fun I developed a small artificial neural network library that does all its work on the stack, no operating system or allocator needed.&lt;&#x2F;p&gt;
-</summary>
+        <summary type="html">&lt;p&gt;Mostly for fun I developed a small artificial neural network library that does all its work on the stack, no operating system or allocator needed.&lt;&#x2F;p&gt;</summary>
         
     </entry>
 </feed>

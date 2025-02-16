@@ -24,8 +24,7 @@
         <id>https://djugei.github.io/optimath-0-3-0/</id>
         
         <summary type="html">&lt;p&gt;Optimath is an experimental const generics based linear algebra library that works without any allocations in no_std and utilizes simd.
-So now you can do fancy maths on embedded.&lt;&#x2F;p&gt;
-</summary>
+So now you can do fancy maths on embedded.&lt;&#x2F;p&gt;</summary>
         
     </entry>
 </feed>

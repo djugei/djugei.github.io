@@ -14,8 +14,7 @@
           <author>Unknown</author>
           <link>https://djugei.github.io/treelike-0-2-0/</link>
           <guid>https://djugei.github.io/treelike-0-2-0/</guid>
-          <description xml:base="https://djugei.github.io/treelike-0-2-0/">&lt;p&gt;Treelike is an abstraction over Trees, kinda like Iterator for lists. Is also no_std by default.&lt;&#x2F;p&gt;
-</description>
+          <description xml:base="https://djugei.github.io/treelike-0-2-0/">&lt;p&gt;Treelike is an abstraction over Trees, kinda like Iterator for lists. Is also no_std by default.&lt;&#x2F;p&gt;</description>
       </item>
     </channel>
 </rss>

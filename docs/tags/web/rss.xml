@@ -14,8 +14,7 @@
           <author>Unknown</author>
           <link>https://djugei.github.io/introduction/</link>
           <guid>https://djugei.github.io/introduction/</guid>
-          <description xml:base="https://djugei.github.io/introduction/">&lt;p&gt;This blog will mainly contain release announcements for my various projects, some deep dives into designs or optimizations I did. Also some opinions sometimes.&lt;&#x2F;p&gt;
-</description>
+          <description xml:base="https://djugei.github.io/introduction/">&lt;p&gt;This blog will mainly contain release announcements for my various projects, some deep dives into designs or optimizations I did. Also some opinions sometimes.&lt;&#x2F;p&gt;</description>
       </item>
     </channel>
 </rss>

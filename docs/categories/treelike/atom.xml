@@ -23,8 +23,7 @@
         <link rel="alternate" type="text/html" href="https://djugei.github.io/treelike-0-2-0/"/>
         <id>https://djugei.github.io/treelike-0-2-0/</id>
         
-        <summary type="html">&lt;p&gt;Treelike is an abstraction over Trees, kinda like Iterator for lists. Is also no_std by default.&lt;&#x2F;p&gt;
-</summary>
+        <summary type="html">&lt;p&gt;Treelike is an abstraction over Trees, kinda like Iterator for lists. Is also no_std by default.&lt;&#x2F;p&gt;</summary>
         
     </entry>
 </feed>

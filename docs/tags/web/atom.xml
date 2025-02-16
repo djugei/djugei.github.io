@@ -23,8 +23,7 @@
         <link rel="alternate" type="text/html" href="https://djugei.github.io/introduction/"/>
         <id>https://djugei.github.io/introduction/</id>
         
-        <summary type="html">&lt;p&gt;This blog will mainly contain release announcements for my various projects, some deep dives into designs or optimizations I did. Also some opinions sometimes.&lt;&#x2F;p&gt;
-</summary>
+        <summary type="html">&lt;p&gt;This blog will mainly contain release announcements for my various projects, some deep dives into designs or optimizations I did. Also some opinions sometimes.&lt;&#x2F;p&gt;</summary>
         
     </entry>
 </feed>

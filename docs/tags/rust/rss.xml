@@ -14,8 +14,7 @@
           <author>Unknown</author>
           <link>https://djugei.github.io/anti-r-0-9/</link>
           <guid>https://djugei.github.io/anti-r-0-9/</guid>
-          <description xml:base="https://djugei.github.io/anti-r-0-9/">&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;crates.io&#x2F;crates&#x2F;anti-r&quot;&gt;anti-r&lt;&#x2F;a&gt; is a spatial data structure that can outperform R-Trees in a few cases.&lt;&#x2F;p&gt;
-</description>
+          <description xml:base="https://djugei.github.io/anti-r-0-9/">&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;crates.io&#x2F;crates&#x2F;anti-r&quot;&gt;anti-r&lt;&#x2F;a&gt; is a spatial data structure that can outperform R-Trees in a few cases.&lt;&#x2F;p&gt;</description>
       </item>
       <item>
           <title>fix-rat published</title>
@@ -23,8 +22,7 @@
           <author>Unknown</author>
           <link>https://djugei.github.io/fix-rat-0-1-0/</link>
           <guid>https://djugei.github.io/fix-rat-0-1-0/</guid>
-          <description xml:base="https://djugei.github.io/fix-rat-0-1-0/">&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;crates.io&#x2F;crates&#x2F;fix-rat&quot;&gt;Fix-rat&lt;&#x2F;a&gt; is a rational number with a denominator chosen at compile time.&lt;&#x2F;p&gt;
-</description>
+          <description xml:base="https://djugei.github.io/fix-rat-0-1-0/">&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;crates.io&#x2F;crates&#x2F;fix-rat&quot;&gt;Fix-rat&lt;&#x2F;a&gt; is a rational number with a denominator chosen at compile time.&lt;&#x2F;p&gt;</description>
       </item>
       <item>
           <title>Im bad at unsafe {}</title>
@@ -32,8 +30,7 @@
           <author>Unknown</author>
           <link>https://djugei.github.io/bad-at-unsafe/</link>
           <guid>https://djugei.github.io/bad-at-unsafe/</guid>
-          <description xml:base="https://djugei.github.io/bad-at-unsafe/">&lt;p&gt;I tried writing a Chunked-List data structure and made all the mistakes while using unsafe for that.&lt;&#x2F;p&gt;
-</description>
+          <description xml:base="https://djugei.github.io/bad-at-unsafe/">&lt;p&gt;I tried writing a Chunked-List data structure and made all the mistakes while using unsafe for that.&lt;&#x2F;p&gt;</description>
       </item>
       <item>
           <title>Optimath version 0.3.0 released</title>
@@ -42,8 +39,7 @@
           <link>https://djugei.github.io/optimath-0-3-0/</link>
           <guid>https://djugei.github.io/optimath-0-3-0/</guid>
           <description xml:base="https://djugei.github.io/optimath-0-3-0/">&lt;p&gt;Optimath is an experimental const generics based linear algebra library that works without any allocations in no_std and utilizes simd.
-So now you can do fancy maths on embedded.&lt;&#x2F;p&gt;
-</description>
+So now you can do fancy maths on embedded.&lt;&#x2F;p&gt;</description>
       </item>
       <item>
           <title>Why I like programming for #![no_std] in Rust (even without embedded)</title>
@@ -52,8 +48,7 @@ So now you can do fancy maths on embedded.&lt;&#x2F;p&gt;
           <link>https://djugei.github.io/no-std-motivation/</link>
           <guid>https://djugei.github.io/no-std-motivation/</guid>
           <description xml:base="https://djugei.github.io/no-std-motivation/">&lt;p&gt;I noticed that I quite enjoy writing libraries that support no_std environments,
-even though I myself don&#x27;t even work on embedded.&lt;&#x2F;p&gt;
-</description>
+even though I myself don&#x27;t even work on embedded.&lt;&#x2F;p&gt;</description>
       </item>
       <item>
           <title>Introduction to my Blog</title>
@@ -61,8 +56,7 @@ even though I myself don&#x27;t even work on embedded.&lt;&#x2F;p&gt;
           <author>Unknown</author>
           <link>https://djugei.github.io/introduction/</link>
           <guid>https://djugei.github.io/introduction/</guid>
-          <description xml:base="https://djugei.github.io/introduction/">&lt;p&gt;This blog will mainly contain release announcements for my various projects, some deep dives into designs or optimizations I did. Also some opinions sometimes.&lt;&#x2F;p&gt;
-</description>
+          <description xml:base="https://djugei.github.io/introduction/">&lt;p&gt;This blog will mainly contain release announcements for my various projects, some deep dives into designs or optimizations I did. Also some opinions sometimes.&lt;&#x2F;p&gt;</description>
       </item>
       <item>
           <title>Dumbnet version 0.1.0 released</title>
@@ -70,8 +64,7 @@ even though I myself don&#x27;t even work on embedded.&lt;&#x2F;p&gt;
           <author>Unknown</author>
           <link>https://djugei.github.io/dumbnet-0-1-0/</link>
           <guid>https://djugei.github.io/dumbnet-0-1-0/</guid>
-          <description xml:base="https://djugei.github.io/dumbnet-0-1-0/">&lt;p&gt;Mostly for fun I developed a small artificial neural network library that does all its work on the stack, no operating system or allocator needed.&lt;&#x2F;p&gt;
-</description>
+          <description xml:base="https://djugei.github.io/dumbnet-0-1-0/">&lt;p&gt;Mostly for fun I developed a small artificial neural network library that does all its work on the stack, no operating system or allocator needed.&lt;&#x2F;p&gt;</description>
       </item>
       <item>
           <title>Treelike version 0.2.0 released</title>
@@ -79,8 +72,7 @@ even though I myself don&#x27;t even work on embedded.&lt;&#x2F;p&gt;
           <author>Unknown</author>
           <link>https://djugei.github.io/treelike-0-2-0/</link>
           <guid>https://djugei.github.io/treelike-0-2-0/</guid>
-          <description xml:base="https://djugei.github.io/treelike-0-2-0/">&lt;p&gt;Treelike is an abstraction over Trees, kinda like Iterator for lists. Is also no_std by default.&lt;&#x2F;p&gt;
-</description>
+          <description xml:base="https://djugei.github.io/treelike-0-2-0/">&lt;p&gt;Treelike is an abstraction over Trees, kinda like Iterator for lists. Is also no_std by default.&lt;&#x2F;p&gt;</description>
       </item>
     </channel>
 </rss>
