@@ -31,7 +31,7 @@ This will synchronize databases,
   download deltas,
     and where no prior version is cached,
   downloads packages from the mirror.
-Afterwards it runs pacman to install the upgrades.
+Afterwards it runs pacman to verify the signatures and install the upgrades.
 So basically it replaces ```pacman -Suy```.
 
 Since deltas are generated on first access the "server generates" phase might take a while.
