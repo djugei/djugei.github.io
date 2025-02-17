@@ -1,7 +1,6 @@
 +++
 title = "How arch-delta Saves 80+% Of Bandwidth On Upgrades"
 date = 2025-02-16
-draft = true
 [taxonomies]
 tags = ["rust"]
 categories = ["arch-delta"]
@@ -117,7 +116,7 @@ It seems to require building a one-entry HeaderMap which can then be inserted in
 The juicy bit, but mechanically also relatively simple.
 
 Once the old and new packages are available they get decompressed,
-  since generating deltas on compressed things is a futile endeavor ([foreshadowing](../arch-delta-released#Issues)).
+  since generating deltas on compressed things is a futile endeavor.
 The decompressed packages are passed into [ddelta-rs](https://lib.rs/crates/ddelta),
   limited by a semaphore to not overload the server.
 

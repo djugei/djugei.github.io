@@ -8,6 +8,10 @@
         <lastmod>2021-02-03</lastmod>
     </url>
     <url>
+        <loc>https://djugei.github.io/arch-delta-released/</loc>
+        <lastmod>2025-02-16</lastmod>
+    </url>
+    <url>
         <loc>https://djugei.github.io/bad-at-unsafe/</loc>
         <lastmod>2020-05-12</lastmod>
     </url>
@@ -16,6 +20,9 @@
     </url>
     <url>
         <loc>https://djugei.github.io/categories/anti-r/</loc>
+    </url>
+    <url>
+        <loc>https://djugei.github.io/categories/arch-delta/</loc>
     </url>
     <url>
         <loc>https://djugei.github.io/categories/blog/</loc>
@@ -42,6 +49,10 @@
     <url>
         <loc>https://djugei.github.io/fix-rat-0-1-0/</loc>
         <lastmod>2021-01-23</lastmod>
+    </url>
+    <url>
+        <loc>https://djugei.github.io/how-arch-delta-works/</loc>
+        <lastmod>2025-02-16</lastmod>
     </url>
     <url>
         <loc>https://djugei.github.io/introduction/</loc>

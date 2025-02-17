@@ -1,7 +1,6 @@
 +++
 title = "arch-delta project release v0.5"
 date = 2025-02-16
-draft = true
 [taxonomies]
 tags = ["rust"]
 categories = ["arch-delta"]
@@ -23,10 +22,10 @@ I have been using it for a year now,
   so I am releasing it for others to benefit too.
 
 ## Installation/Setup/Usage
-Install [```deltaclient```](http://aur.archlinux.org/packages/deltaclient) from the AUR,
+Install [```deltaclient```](http://aur.archlinux.org/packages/deltaclient-git) from the AUR,
 then run:
 ```sh
-sudo deltaclient upgrade http://bogen.moeh.re/  
+sudo deltaclient upgrade http://bogen.moeh.re/
 ```
 This will synchronize databases,
   download deltas,
@@ -48,6 +47,10 @@ sudo systemctl start deltaclient.service
 
 # to actually run the upgrade
 sudo pacman -Su # no -y
+
+# optionally change the frequency,
+# the default of once per hour is way more than usually needed.
+sudo systemctl edit deltaclient.timer
 ```
 This will regularly check for updates and download delta upgrades into the package cache.
 It will not download regular upgrades to not put undue stress on the network connection.
@@ -55,8 +58,11 @@ Then just run ```pacman -Su``` (note the lack of ```-y```) whenever you want to 
 
 ## Usage tips
 - *DO NOT EVER* run ```pacman -Scc``` (one ```c``` is fine).
-arch-delta needs a locally cached version of a package to build the delta off of.
-No local package, no delta.
+  arch-delta needs a locally cached version of a package to build the delta off of.
+  No local package, no delta.
+
+- If you want to benefit from delta upgrades for the databases (core, extra, multilib),
+  avoid running ```pacman -Sy```
 
 - Check ```deltaclient download``` for a way to run the deltaclient as a regular user,
   without requiring root, and therefore no trust in me!
@@ -66,6 +72,8 @@ No local package, no delta.
   Note that even the regular arch packages are sometimes built using the testing version of zstd.
 
 - You can set ```RUST_LOG=deltaclient=debug``` to get more detailed output.
+
+- The help texts are usually quite helpful :)
 
 ## How well does it work?
 Pretty well.
@@ -115,7 +123,7 @@ Distributing uncompressed kernel modules would save about 30MB on regular packag
 
 Possibly the package can be modified to not compress modules and instead optionally compress them post-install.
 Though I have less hope of the Arch Linux developers accepting that change,
-modern filesystems having transparent compression built-in is a pretty good argument.
+modern file systems having transparent compression built-in is a pretty good argument.
 
 ### Database deltas
 Status: newer but promising.
@@ -132,4 +140,3 @@ Status: pretty new
 
 I mainly added this to fill the time otherwise spent waiting for delta generation.
 Its pretty new but also quite simple and seems to work well so far.
-

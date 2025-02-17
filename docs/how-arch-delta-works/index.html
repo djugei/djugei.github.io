@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title>Devblog of Djugei</title>
+
+      
+        <link rel="stylesheet" href="https://djugei.github.io/site.css">
+      
+
+      
+      
+          <link rel="alternate" type="application/rss+xml" title="RSS" href="https://djugei.github.io/rss.xml">
+          <link rel="alternate" type="application/atom+xml" title="Atom" href="https://djugei.github.io/atom.xml">
+      
+      
+    </head>
+
+    <body class="hack dark main container">
+            
+                
+                    <header>
+                        <nav itemscope itemtype="http://schema.org/SiteNavigationElement">
+                        
+                            <a itemprop="url"
+                               class=""
+                               href="https:&#x2F;&#x2F;djugei.github.io">
+                                <span itemprop="name">Home
+                                </span></a>
+                        
+                            <a itemprop="url"
+                               class=""
+                               href="https:&#x2F;&#x2F;djugei.github.io&#x2F;categories">
+                                <span itemprop="name">Categories
+                                </span></a>
+                        
+                            <a itemprop="url"
+                               class=""
+                               href="https:&#x2F;&#x2F;djugei.github.io&#x2F;tags">
+                                <span itemprop="name">Tags
+                                </span></a>
+                        
+                        
+                        </nav>
+                    </header>
+                
+            
+
+        
+
+<article itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+        <h1 itemprop="headline">How arch-delta Saves 80+% Of Bandwidth On Upgrades</h1>
+        <span class="muted">
+    <svg style="margin-bottom:-3px" class="i-clock" viewBox="0 0 32 32"
+         width="16" height="16" fill="none" stroke="currentcolor"
+         stroke-linecap="round" stroke-linejoin="round" stroke-width="6.25%">
+        <circle cx="16" cy="16" r="14"/>
+        <path d="M16 8 L16 16 20 20"/>
+    </svg>
+    <span>15 minute read</span>
+    <svg style="margin-bottom: -3px" class="i-edit" viewBox="0 0 32 32"
+         width="16" height="16" fill="none" stroke="currentcolor"
+         stroke-linecap="round" stroke-linejoin="round" stroke-width="6.25%">
+        <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z"/>
+    </svg>
+
+    Published: 2025-02-16
+</span>
+    </header>
+    <div itemprop="articleBody">
+      <p><a href="https://github.com/djugei/arch-delta-upgrades/">arch-delta</a> upgrades arch installations
+using ~83.97%* less bandwidth by only downloading the difference between package versions.</p>
+<span id="continue-reading"></span>
+<p>This post is more of a technical overview, for people interested in programming and rust.
+Read the <a href="../arch-delta-released">sister post</a> if you want to know what this is about or you use arch btw.
+I will give an overview of the project.
+If people are interested I might do deeper dives into some aspects in later posts.</p>
+<h2 id="history-timeline">History/Timeline</h2>
+<p>Arch Linux's package manager pacman used to have a built-in delta upgrade.
+This was discontinued around 2019 due to
+<a href="https://security.archlinux.org/CVE-2019-18183">security concerns</a>,
+implementation complexity
+and a perceived lack of usage.</p>
+<p>There was only one server really providing deltas,
+if memory serves me right, it only provided deltas between directly adjacent versions.
+It was based on the xdelta3 tool/algorithm.</p>
+<p>I was an avid user of that feature, due to my very slow internet connection.
+So in 2023 I started working on a replacement.
+I have been using it for more than a year now and it feels ready for release.</p>
+<h2 id="design">Design</h2>
+<p>I decided on a slightly different approach for my project.
+For one the underlying delta algorithm is ddelta,
+a continuation of bsdiff which itself noticeably outperforms xdelta3.</p>
+<p>The server generates deltas on demand instead of pre-generating them, leading to a 100% hit rate,
+though at the cost of some delay for the first client.</p>
+<p>Instead of signing the deltas and introducing an additional trusted party,
+the packages are recreated in a bit-exact manner on the client
+and pacman's regular signature checking can be utilized.</p>
+<p>The client wraps pacman instead of instead of being more tightly integrated,
+mainly to provide user-friendly progress indicators while working on multiple packages in parallel.</p>
+<p>Rust alleviates at least some of the common security concerns.
+Additionally the Arch Linux project does not have to shoulder any additional complexity.</p>
+<h3 id="alternatives">Alternatives</h3>
+<p>Pre-generating the most common and most compressible packages and communicating them to the client as a whitelist
+would allow a somewhat simpler design.
+The client gets called for each dependency (XferCommand)
+and either does the delta download or gets the package from the mirror.
+This would potentially loose a lot of the long tail.
+While ~50% of the size savings are found in the top 10 packages,
+it required generating a lot of deltas to <em>find</em> those top 10 packages.</p>
+<p>A solution to that may be a hybrid approach where the server supports both styles and the user can choose.</p>
+<h2 id="development-tricks">Development tricks</h2>
+<p>Before getting into the details,
+let me share some things that helped get this project done.</p>
+<h3 id="small-todo-notes">Small todo notes.</h3>
+<p>If you check the <code>.gitignore</code> you may find that files called todo are excluded.
+Whenever I did not have time or motivation and noticed
+a feature needs to be done,
+nontrivial bug needs to be fixed,
+or design needs to be changed,
+I put it in there.
+Then either noticed that some part of the todo could be done right away,
+or I would simply pick up a task the next time I came back.
+Small bugs or things related to only a specific section on the code I put into <code>rust //TODO:</code> or <code>rust //FIXME:</code>comments.
+No need to be consistent,
+just do what helps.</p>
+<h3 id="just-fork-it">Just fork it</h3>
+<p>Sometimes your dependencies don't quite work the way you like them to,
+or they may be lacking a feature.
+I have pretty aggressively forked the dependencies,
+implemented the change
+and switched to relying on my own repository.
+I have then generally opened a PR in the upstream repository.</p>
+<p>This way you don't get blocked and the upstream project potentially gains a feature.</p>
+<h2 id="server">Server</h2>
+<p>The server has to:</p>
+<ul>
+<li>Accept a request for a delta from an old to a new version</li>
+<li>Get base packages from regular arch mirrors</li>
+<li>Calculate deltas between old and new</li>
+<li>Serve the delta to the client</li>
+</ul>
+<p>To avoid wasting resources packages and deltas are cached between requests.
+To efficiently utilize the servers available resources,
+multiple things are done concurrently using async.</p>
+<h3 id="get">Get</h3>
+<p>This is mostly a simple download, limited by a semaphore to not overload the connection.
+Arch Linux mirrors only carry the most up-to-date package,
+but there is a high likelihood of old package being cached from the last update.
+In any case the <a href="https://wiki.archlinux.org/title/Arch_Linux_Archive">Arch Linux Archive</a> is used as a fallback.</p>
+<p>I found the headers crate to be a bit lacking. For example the ContentDisposition header only allows partial construction and no parsing.
+Luckily the <a href="https://github.com/ruma/ruma">ruma</a> project has an implementation that I simply copied over.
+Also there is pretty bad integration between reqwest and the headers crate.
+It seems to require building a one-entry HeaderMap which can then be inserted into the reqwest request.</p>
+<h3 id="delta">Delta</h3>
+<p>The juicy bit, but mechanically also relatively simple.</p>
+<p>Once the old and new packages are available they get decompressed,
+since generating deltas on compressed things is a futile endeavor.
+The decompressed packages are passed into <a href="https://lib.rs/crates/ddelta">ddelta-rs</a>,
+limited by a semaphore to not overload the server.</p>
+<p>Delta generation uses a lot of CPU time and a lot of memory.
+While counting the number of cores is pretty simple,
+limiting for memory is not.
+Each delta uses an amount of memory linearly related to the uncompressed package sizes,
+which are wildly different and unknown before decompression.
+The current tactic is to just hope enough memory is available and hit swap in the worst case.
+Since decompressed packages are highly compressible,
+tools like zswap and zram can be viable mitigations.</p>
+<p>Delta generating is spawned as an independent task with a back-channel,
+to avoid wasting work when a request times out.</p>
+<h3 id="cache">Cache</h3>
+<p>The most complex part of this project was to get a (hopefully) correct cache.
+As no existing caches I found met my requirements:</p>
+<ul>
+<li>On-Disc cache</li>
+<li>Manual cache expulsion</li>
+<li>Readable filenames</li>
+</ul>
+<p>I had make my own.</p>
+<p>The Cache holds a Mutex-protected HashMap.
+Each Entry contains the cache-key and a broadcast channel.</p>
+<p>The basic flow is:</p>
+<ol>
+<li>Lock HashMap</li>
+<li>Check if an entry exists for the value we need</li>
+<li>If none exists check on Disc if the file exists,</li>
+<li>If none exists add an entry to the HashMap and start generating</li>
+<li>Drop Lock</li>
+<li>Finish generating, send message, remove the entry</li>
+</ol>
+<p>If in step 2 the Entry exists,
+we simply wait for a message on the channel and read the file afterwards.</p>
+<p>Generating the File might fail.
+In that case the generating task simply fails,
+while all other waiters restart the basic flow.
+One of them turns into the new generator,
+the others resume waiting.</p>
+<p>The generator writes into a temporary file
+that only gets renamed to it's permanent name
+after successful generation
+to avoid step 3 finding a garbage file.</p>
+<p>I used Hashbrown as my HashMap implementation of choice.
+To save on a copy bound on the Key I have slightly <a href="https://github.com/rust-lang/hashbrown/pull/579">extended their entry API</a>,
+allowing users to provide the owned Key at insertion instead of at query time.</p>
+<h4 id="api">API</h4>
+<p><code>CacheState</code> types hold the State,
+if any is needed,
+for example a handle to a HTTP-client,
+or a name/path to differentiate instances.
+They need to provide two functions,
+one that turns a cache key into a file-system path,
+and one that generates the File.</p>
+<p>In the first iteration those were provided as loose functions to the <code>FileCache</code>.
+While this allowed the same type to be cached differently in different places
+it made the types <em>horrible</em> and generally unnameable.</p>
+<p>The current iteration requires the implementation of a trait,
+that covers those functions leading to a much more usable interface.
+The type look much nicer now too, as the Key and Error are associated types now,
+therefore disappearing from the type signature.</p>
+<h3 id="async">Async</h3>
+<p>Since I wanted to use computational and network resources in parallel
+some manner of concurrency was required.
+I needed an HTTP-server
+and most frameworks are async-based,
+so I chose async over threads.</p>
+<p>This is a choice I have now come to regret.</p>
+<p>For one,
+since the requests that actually calculate the deltas are computationally intensive,
+I end up spawning threads anyways.</p>
+<p>Choosing async in practice means choosing tokio
+because the rust std-lib does not provide sufficient async functionality out of the box,
+leading library implementer towards writing runtime-specific code.
+The cache I implemented for this project now depends on tokio,
+as I needed to spawn a blocking task and use an async-aware Mutex.
+If rust is serious about async support it needs to have good defaults.
+This means either integrating tokio into the standard library
+or actually providing a set of Traits and types for interoperability and abstraction.</p>
+<p>The debugging experience was also … not great.
+(anyhow-)backtraces are now horrible and contain 200 lines of tokio-related spam.
+Luckily that's more of a nuisance since I did not have too many crashes overall.</p>
+<p>More importantly here is a memory leak I can not track down.
+After serving a few requests the server keeps using 500MB in idle.
+I am reasonably sure that no data structure I introduced grows unbounded.
+Though tools to find the (recursive) memory use of a struct are very lacking.
+I used heaptrack and bytehound,
+but did not find useful information in their output.
+Libraries
+that instrument your code to provide a <code>size_in_mem</code> function
+require recursively deriving a trait on all structs you are interested in.
+Since you can not implement foreign traits on foreign types,
+the libraries would have to provide trait implementations on all your dependencies.
+An impossible task.
+I assume that the issue is somewhere in the framework or the runtime.
+No idea where and how to debug this though.
+Utilizing jemalloc has slowed the leak down considerably,
+it might therefore be a memory fragmentation issue.</p>
+<p>Overall I will probably re-engineer the server to use some purely threaded solution.
+That also means rewriting the cache,
+though the logic stays the same,
+so I am hoping that just removing the async/await keywords will do the trick.</p>
+<h2 id="client">Client</h2>
+<p>The client has to:</p>
+<ul>
+<li>Check for new packages</li>
+<li>Check for existing old packages to use as a delta base</li>
+<li>Send requests to generate/download deltas</li>
+<li>Wait for deltas to be generated</li>
+<li>Download deltas</li>
+<li>Patch packages</li>
+<li>Re-compress packages to provide bit-identical versions for signatures</li>
+<li>And show a responsive, informative user interface.</li>
+</ul>
+<p>The client also uses async.
+Though I did hit a wall when trying to create a composable retry-function,
+somehow it felt way better than on the server.
+Most steps are quite straightforward.
+Semaphores are used to limit the degree of parallelism to not overload the client or server.</p>
+<p><code>pacman -Sy</code> is used to check for new packages (though see <a href="https://djugei.github.io/how-arch-delta-works/#database-deltas">Database Deltas</a> for recent developments),
+<code>pacman -Sup</code> gives a list of upgrade candidates.</p>
+<p>A dirwalk through the cache directory finds available old packages.
+to catch packages being renamed there is some string similarity matching if exact matches could not be found.</p>
+<p>The server might take a while to generate packages,
+or unreliable connections could cancel a download,
+so retry and resume logic has been put into place.
+Only one download is done at a time,
+to not overload the connection.</p>
+<p>Since the signatures of packages are generated on the compressed files
+it is necessary to recompress with the exact same parameters.
+I was unable to call the zstd library in the correct way,
+so I spawn process of the zstd command line tool.
+Thankfully that provides reproducible results.</p>
+<h3 id="bit-exact-reproduction">Bit-exact reproduction</h3>
+<p>Compression requires the exact same version of zstd and the exact same parameters.
+Since I deem juggling multiple versions of zstd to be out of scope
+this results in some unpleasantness around zstd upgrades.
+This is made somewhat worse by arch "stable" packages sometimes being built within a "testing" environment.
+Additionally packages can in theory alter the zstd compression parameters,
+though to my knowledge only two packages do.
+Ironically that includes <a href="https://gitlab.archlinux.org/archlinux/packaging/packages/rust/-/issues/4">the rust package</a>,
+for a net size save of 647 bytes.</p>
+<p>A solution for this is to have signatures on the uncompressed packages.
+arch-delta is specifically designed not to be trusted,
+so rolling my own signing infrastructure is not in the cards.
+I hope to be able to convince the arch developers to provide uncompressed signatures
+in addition to the compressed ones,
+once this approach is shown to be useful.
+This also has the advantage of skipping the recompression step which is generally pointless,
+as the packages get instantly installed anyways.</p>
+<h3 id="signatures">Signatures</h3>
+<p>While Pacman automatically downloads missing signatures, it does so in a sequential manner,
+which takes a noticeable amount of time due to all the roundtrips involved.
+As async makes this quite simple we also download all signature files concurrently.</p>
+<h3 id="ui">UI</h3>
+<p>Since a package can be in one of 4 states (waiting, downloading, patching/compressing, error)
+and a lot of packages are processed concurrently
+and the entire process takes quite a bit of time,
+its necessary to provide the user with feedback,
+otherwise they grow impatient.</p>
+<p>I chose to show progress for currently running tasks,
+as well as printing a log of events to the terminal.</p>
+<p>This is implemented using <a href="https://lib.rs/crates/indicatif">indicatif</a> for the progress bars
+and the <a href="https://lib.rs/crates/log">log</a> crate with <a href="https://lib.rs/crates/env_logger">env_logger</a> for the log.
+Since those two sometimes fight for the terminal,
+I created <a href="https://lib.rs/crates/indicatif-log-bridge">indicatif-log-bridge</a>,
+a surprisingly popular crate,
+that makes them play nice.</p>
+<p>People generally want to know</p>
+<ol>
+<li>Whats happening</li>
+<li>How long its gonna take</li>
+<li>Why something happened,
+especially if something goes wrong</li>
+<li>If something was worth it</li>
+</ol>
+<p>Progress bars are a great tool for 1.) and 2.),
+but getting accurate etas is not easy,
+especially with tasks of wildly different sizes.
+I show a progress bar per running task,
+and a big overall one.</p>
+<p>I made sure the server included the content-length header
+so the download phase can be accurately displayed/predicted.
+The patching/compressing phase is slightly harder,
+for one neither the patch, the old version, or the new version get accessed in a linear manner.
+I built some <a href="https://github.com/console-rs/indicatif/pull/657">heuristics</a> for that but its not perfect.
+Additionally there is a black box compression phase which is handled by an external tool.</p>
+<p>The overall progress bar uses the estimated decompressed sizes of the old packets
+and gets incremented by half the size after the download and patching phases finished.
+Since Arch Linux packages get compressed on the fly,
+by piping them into zstd and piping the output into a file,
+the header can not be fully populated
+and only full decompression can give a precise measure of decompressed size.
+There is an estimation function available that generally massively overestimates.
+Since the absolute size is not as important as the relative sizes of the packets,
+that is something I just accept,
+and communicate to the users.</p>
+<p>Potential improvements are to figure out the correct compression parameters,
+remember relative speed of network and compute on the users computer,
+and a rough estimation of patch creation duration on the server.
+Those changes are somewhat low priority though.</p>
+<p>To explain why something happens I write a long message a non-default path is taken.
+This is generally either the package being on the blacklist due to know bad delta compression performance,
+or no previous package of that name being available in the package cache,
+usually because of package renames or <code>pacman -Scc</code>.</p>
+<p>* the efficiency described in the opening paragraph is with the Linux kernel blacklisted,
+due to very low gains and long calculation.
+It also only covers hits,
+ignoring uncaught renames,
+newly introduced dependencies,
+and the user simply not having the previous version in cache.</p>
+<p>To give efficacy feedback the tool outputs bandwidth saved in the end of each run,
+and provides a "stats" sub-command that calculates statistics by scanning the package cache.</p>
+<h2 id="database-deltas">Database Deltas</h2>
+<p>Part of the bandwidth for updates is used to find which updates are available <code>pacman -Sy</code>.
+As the bandwidth for downloading packages was massively reduced by deltas the database sync became relatively more relevant.</p>
+<p>So I added delta updates for databases.</p>
+<p>Works very similar to deltas for packages, except for databases lacking versions.
+So I made the name a version at most once every 10 minutes,
+but only if the upstream database actually changed.
+This way the client can tell the server which version it has,
+and the server can reply with a delta to the newest version,
+including the newest versions name.
+The server <em>should</em> always have the old version,
+since that was served to the client the last time.</p>
+<p>This works really well,
+generally saving 99+% of bandwidth.</p>
+<p>This feature is not as well tested as the rest of the software, so it can be disabled.</p>
+
+    </div>
+
+    
+        <footer>
+            <hr>
+            <p>
+                
+                
+					click on the <a href="https://djugei.github.io/rss.xml">(rss)</a> links to subscribe to categories or tags you care about.<br/>
+                
+                
+                    
+                    in <a href="https://djugei.github.io/categories/arch-delta/">arch-delta</a>
+                    <a href="https://djugei.github.io/categories/arch-delta/rss.xml">(rss)</a>
+                
+                
+                        
+                            and
+                        
+                    tagged
+                    
+                        <a href="https://djugei.github.io/tags/rust/">rust</a>
+                        <a href="https://djugei.github.io/tags/rust/rss.xml">(rss)</a>
+                        
+                    
+                
+            </p>
+        </footer>
+    
+</article>
+
+
+    </body>
+
+</html>
