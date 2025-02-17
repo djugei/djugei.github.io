@@ -44,7 +44,7 @@ Instead of signing the deltas and introducing an additional trusted party,
   the packages are recreated in a bit-exact manner on the client
   and pacman's regular signature checking can be utilized.
 
-The client wraps pacman instead of instead of being more tightly integrated,
+The client wraps pacman instead of being more tightly integrated,
 mainly to provide user-friendly progress indicators while working on multiple packages in parallel.
 
 Rust alleviates at least some of the common security concerns.
